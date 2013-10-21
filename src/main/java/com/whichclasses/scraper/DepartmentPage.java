@@ -1,6 +1,8 @@
 package com.whichclasses.scraper;
 
 import org.jsoup.nodes.Document;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 public class DepartmentPage {
   private final AuthenticatedClient client;
@@ -8,8 +10,16 @@ public class DepartmentPage {
   private final String name;
   private Document document;
 
-  // Assisted injection plz?
-  DepartmentPage(AuthenticatedClient client, String identifier, String name) {
+  public interface DepartmentPageFactory {
+    DepartmentPage create(
+        @Assisted("DepartmentIdentifier") String identifier,
+        @Assisted("DepartmentName") String name);
+  }
+
+  @Inject
+  public DepartmentPage(AuthenticatedClient client,
+      @Assisted("DepartmentIdentifier") String identifier,
+      @Assisted("DepartmentName") String name) {
     this.client = client;
     this.identifier = identifier;
     this.name = name;

@@ -5,17 +5,22 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import com.whichclasses.http.HttpUtils;
+import com.whichclasses.scraper.DepartmentPage.DepartmentPageFactory;
 
 public class DeptListPage {
 
   private static final String DEPARTMENT_LIST_URL =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/DeptList.aspx";
   private final AuthenticatedClient client;
+  private final DepartmentPageFactory departmentPageFactory;
   private Document document;
 
-  DeptListPage(AuthenticatedClient client) {
+  @Inject
+  DeptListPage(AuthenticatedClient client, DepartmentPageFactory departmentPageFactory) {
     this.client = client;
+    this.departmentPageFactory = departmentPageFactory;
   }
 
   private void initialize() {
@@ -36,7 +41,7 @@ public class DeptListPage {
       String departmentId = HttpUtils.getFirstQueryParameter(departmentLink.attr("href"), "crssub");
       if (departmentId != null && departmentId.length() > 0) {
         String departmentName = departmentLink.text();
-        departmentPages.add(new DepartmentPage(client, departmentId, departmentName));
+        departmentPages.add(departmentPageFactory.create(departmentId, departmentName));
       }
     }
 

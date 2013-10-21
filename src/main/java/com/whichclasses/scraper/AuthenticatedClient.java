@@ -21,16 +21,20 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.whichclasses.http.HttpUtilsSucksRedirectStrategy;
 
 /**
- * Handles logging in to WebAuth.
+ * Makes all Http requests to the TCE website, authenticating
  */
+@Singleton
 public class AuthenticatedClient {
   private static final String WEBAUTH_LOGIN_URL = "https://webauth.arizona.edu/webauth/login";
   private static final String WEBAUTH_USERNAME = System.getProperty("webauthUsername", "gunsch");
   private static final String WEBAUTH_PASSWORD = System.getProperty("webauthPassword");
 
+  @Inject
   public AuthenticatedClient() {}
 
   private final CookieStore cookieStore = new BasicCookieStore();
@@ -99,10 +103,15 @@ public class AuthenticatedClient {
     HttpPost loginRequest = new HttpPost(loginUri);
     loginRequest.setEntity(new UrlEncodedFormEntity(formPostData, Consts.UTF_8));
     try (CloseableHttpResponse loginResponse = client.execute(loginRequest)) {
+      // TODO 200 still occurs on login failure. Check for a better indicator.
       if (loginResponse.getStatusLine().getStatusCode() != 200) {
         throw new RuntimeException("Login failed!");
       }
     }
     isWebauthAuthenticated = true;
+
+    // TODO find a better place for this
+    // Start a session on the TCE website
+    getPage("https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/logon.aspx");
   }
 }

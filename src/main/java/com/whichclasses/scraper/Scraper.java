@@ -1,14 +1,17 @@
 package com.whichclasses.scraper;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+
 public class Scraper {
 
   public static void main(String[] args) throws Exception {
-    AuthenticatedClient client = new AuthenticatedClient();
-
-    // First: log on to the TCE site
-    client.getPage("https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/logon.aspx");
-
-    DeptListPage page = new DeptListPage(client);
+    Injector injector = Guice.createInjector(
+        new FactoryModuleBuilder()
+            .implement(DepartmentPage.class, DepartmentPage.class)
+            .build(DepartmentPage.DepartmentPageFactory.class));
+    DeptListPage page = injector.getInstance(DeptListPage.class);
     System.out.println(page.getDepartmentPages());
   }
 
