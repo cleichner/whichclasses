@@ -23,18 +23,18 @@ public class DeptListPage {
     this.departmentPageFactory = departmentPageFactory;
   }
 
-  private void initialize() {
-    document = client.getPage(DEPARTMENT_LIST_URL);
+  private Document getDocument() {
+    if (document == null) {
+      document = client.getPage(DEPARTMENT_LIST_URL);
+    }
+    return document;
   }
 
   /**
    * @return a list of individual department pages from the department list page
    */
   public List<DepartmentPage> getDepartmentPages() {
-    if (document == null) {
-      initialize();
-    }
-
+    Document document = getDocument();
     Elements departmentLinks = document.select("#GV1 a[href]");
     List<DepartmentPage> departmentPages = Lists.newLinkedList();
     for (Element departmentLink : departmentLinks) {
