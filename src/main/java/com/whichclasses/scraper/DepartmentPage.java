@@ -45,13 +45,15 @@ public class DepartmentPage {
     return document;
   }
 
+  /**
+   * @return map of course titles (e.g. "ACCT 200A") to CoursePage instances
+   */
   public Map<String, CoursePage> getCoursePages() {
-    // TODO avoid dupes. Maybe change this to Map.<CourseId, CoursePage>.
     Document document = getDocument();
     Elements courseLinks = document.select("#GV1 a[href]");
     Map<String, CoursePage> coursePages = Maps.newHashMap();
     for (Element courseLink : courseLinks) {
-      String courseId = HttpUtils.getFirstQueryParameter(courseLink.attr("href"), "crssub");
+      String courseId = HttpUtils.getFirstQueryParameter(courseLink.attr("href"), "crsnum");
       if (courseId != null && courseId.length() > 0) {
         String courseTitle = courseLink.text();
         coursePages.put(courseId, coursePageFactory.create(identifier, courseId, courseTitle));
