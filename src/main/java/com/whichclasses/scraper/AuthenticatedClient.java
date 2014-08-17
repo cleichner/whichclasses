@@ -3,6 +3,7 @@ package com.whichclasses.scraper;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+
 import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -20,6 +21,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -81,6 +83,10 @@ public class AuthenticatedClient {
    */
   private void ensureWebauthAuthorization() throws Exception {
     if (isWebauthAuthenticated) return;
+
+    if (WEBAUTH_PASSWORD == null) {
+    	throw new IllegalArgumentException("Webauth password not provided.");
+    }
 
     // Simulate a long form!
     Document webauthLoginPage = getPage(client, WEBAUTH_LOGIN_URL);
