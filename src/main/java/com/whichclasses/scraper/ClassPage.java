@@ -7,11 +7,10 @@ import com.google.inject.assistedinject.Assisted;
  * Represents the TCE page dealing with a single instance of a course (e.g.
  * CSC 335 taught in Spring 2012 by Mercer).
  */
-public class ClassPage {
+public class ClassPage extends CacheableLazyLoadedPage {
 
   private static final String CLASS_PAGE_URL_BASE =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?Report=ASUARep";
-  private final AuthenticatedClient client;
   // TODO extract all of this to a separate model class.
   private final String crsId;
   private final int trmCod;
@@ -27,9 +26,14 @@ public class ClassPage {
       AuthenticatedClient client,
       @Assisted("ClassId") String crsId,
       @Assisted("Semester") int trmCod) {
-    this.client = client;
+    super(client);
     this.crsId = crsId;
     this.trmCod = trmCod;
+  }
+
+  @Override String getHtmlUrl() {
+    // TODO actual URL here.
+    return CLASS_PAGE_URL_BASE;
   }
 
   @Override public String toString() {

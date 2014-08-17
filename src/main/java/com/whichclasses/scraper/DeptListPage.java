@@ -11,25 +11,22 @@ import com.google.inject.Inject;
 import com.whichclasses.http.HttpUtils;
 import com.whichclasses.scraper.DepartmentPage.DepartmentPageFactory;
 
-public class DeptListPage implements ContainerPage<DepartmentPage> {
+public class DeptListPage extends CacheableLazyLoadedPage
+    implements ContainerPage<DepartmentPage> {
 
   private static final String DEPARTMENT_LIST_URL =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/DeptList.aspx";
-  private final AuthenticatedClient client;
   private final DepartmentPageFactory departmentPageFactory;
-  private Document document;
 
   @Inject
   DeptListPage(AuthenticatedClient client, DepartmentPageFactory departmentPageFactory) {
-    this.client = client;
+    super(client);
     this.departmentPageFactory = departmentPageFactory;
   }
 
-  private Document getDocument() {
-    if (document == null) {
-      document = client.getPage(DEPARTMENT_LIST_URL);
-    }
-    return document;
+  @Override
+  String getHtmlUrl() {
+    return DEPARTMENT_LIST_URL;
   }
 
   /**

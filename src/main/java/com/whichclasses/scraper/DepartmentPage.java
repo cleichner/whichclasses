@@ -12,15 +12,12 @@ import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.http.HttpUtils;
 import com.whichclasses.scraper.CoursePage.CoursePageFactory;
 
-public class DepartmentPage implements ContainerPage<CoursePage> {
+public class DepartmentPage extends CacheableLazyLoadedPage implements ContainerPage<CoursePage> {
   private static final String DEPARTMENT_PAGE_URL_BASE =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?Report=DEPTCOURSE";
-  private final AuthenticatedClient client;
   private final CoursePageFactory coursePageFactory;
   private final String identifier;
   private final String name;
-  private final String departmentPageUrl;
-  private Document document;
 
   public interface DepartmentPageFactory {
     DepartmentPage create(
@@ -33,18 +30,15 @@ public class DepartmentPage implements ContainerPage<CoursePage> {
       CoursePageFactory coursePageFactory,
       @Assisted("DepartmentIdentifier") String identifier,
       @Assisted("DepartmentName") String name) {
-    this.client = client;
+    super(client);
     this.coursePageFactory = coursePageFactory;
     this.identifier = identifier;
     this.name = name;
-    this.departmentPageUrl = DEPARTMENT_PAGE_URL_BASE + "&crssub=" + identifier;
   }
 
-  private Document getDocument() {
-    if (document == null) {
-      document = client.getPage(departmentPageUrl);
-    }
-    return document;
+  @Override
+  String getHtmlUrl() {
+    return DEPARTMENT_PAGE_URL_BASE + "&crssub=" + identifier;
   }
 
   /**
