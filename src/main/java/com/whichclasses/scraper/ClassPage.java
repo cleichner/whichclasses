@@ -10,7 +10,8 @@ import com.google.inject.assistedinject.Assisted;
 public class ClassPage extends CacheableLazyLoadedPage {
 
   private static final String CLASS_PAGE_URL_BASE =
-      "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?Report=ASUARep";
+      "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?Report=ASUARep&"
+      + "crsid=%s&trmcod=%s";
   // TODO extract all of this to a separate model class.
   private final String crsId;
   private final int trmCod;
@@ -32,8 +33,7 @@ public class ClassPage extends CacheableLazyLoadedPage {
   }
 
   @Override String getHtmlUrl() {
-    // TODO actual URL here.
-    return CLASS_PAGE_URL_BASE;
+    return String.format(CLASS_PAGE_URL_BASE, crsId, trmCod);
   }
 
   @Override public String toString() {

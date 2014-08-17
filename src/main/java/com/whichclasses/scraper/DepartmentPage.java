@@ -14,7 +14,8 @@ import com.whichclasses.scraper.CoursePage.CoursePageFactory;
 
 public class DepartmentPage extends CacheableLazyLoadedPage implements ContainerPage<CoursePage> {
   private static final String DEPARTMENT_PAGE_URL_BASE =
-      "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?Report=DEPTCOURSE";
+      "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?"
+      + "Report=DEPTCOURSE&crssub=%s";
   private final CoursePageFactory coursePageFactory;
   private final String identifier;
   private final String name;
@@ -38,7 +39,7 @@ public class DepartmentPage extends CacheableLazyLoadedPage implements Container
 
   @Override
   String getHtmlUrl() {
-    return DEPARTMENT_PAGE_URL_BASE + "&crssub=" + identifier;
+    return String.format(DEPARTMENT_PAGE_URL_BASE, identifier);
   }
 
   /**

@@ -19,7 +19,8 @@ import com.whichclasses.scraper.ClassPage.ClassPageFactory;
  */
 public class CoursePage extends CacheableLazyLoadedPage implements ContainerPage<ClassPage> {
   private static final String COURSE_PAGE_URL_BASE =
-      "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?Report=DEPTONECLASS";
+      "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/"
+      + "GenerateReport.aspx?Report=DEPTONECLASS&crssub=%s&crsnum=%s";
   private final ClassPageFactory classPageFactory;
   private final String id;
   private final String title;
@@ -43,7 +44,7 @@ public class CoursePage extends CacheableLazyLoadedPage implements ContainerPage
     this.classPageFactory = classPageFactory;
     this.id = id;
     this.title = title;
-    this.coursePageUrl = COURSE_PAGE_URL_BASE + "&crssub=" + departmentId + "&crsnum=" + id;
+    this.coursePageUrl = String.format(COURSE_PAGE_URL_BASE, departmentId, id);
   }
 
   @Override
