@@ -1,15 +1,17 @@
 package com.whichclasses.scraper;
 
-import java.util.List;
+import java.util.Map;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import com.google.common.collect.Lists;
+
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.whichclasses.http.HttpUtils;
 import com.whichclasses.scraper.DepartmentPage.DepartmentPageFactory;
 
-public class DeptListPage {
+public class DeptListPage implements ContainerPage<DepartmentPage> {
 
   private static final String DEPARTMENT_LIST_URL =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/DeptList.aspx";
@@ -33,15 +35,17 @@ public class DeptListPage {
   /**
    * @return a list of individual department pages from the department list page
    */
-  public List<DepartmentPage> getDepartmentPages() {
+  public Map<String, DepartmentPage> getChildPages() {
     Document document = getDocument();
     Elements departmentLinks = document.select("#GV1 a[href]");
-    List<DepartmentPage> departmentPages = Lists.newLinkedList();
+    Map<String, DepartmentPage> departmentPages = Maps.newHashMap();
     for (Element departmentLink : departmentLinks) {
       String departmentId = HttpUtils.getFirstQueryParameter(departmentLink.attr("href"), "crssub");
       if (departmentId != null && departmentId.length() > 0) {
         String departmentName = departmentLink.text();
-        departmentPages.add(departmentPageFactory.create(departmentId, departmentName));
+        // TODO(gunsch): Reduce name in map to department code.
+        departmentPages.put(departmentName,
+        		departmentPageFactory.create(departmentId, departmentName));
       }
     }
 

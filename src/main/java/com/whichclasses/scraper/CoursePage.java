@@ -15,7 +15,7 @@ import com.whichclasses.scraper.ClassPage.ClassPageFactory;
  * Represents the TCE page dealing with a single course (e.g. ACCT 200), but
  * not a single class (e.g. ACCT in Fall 2012 taught by Prof. Johnson).
  */
-public class CoursePage {
+public class CoursePage implements ContainerPage<ClassPage> {
   private static final String COURSE_PAGE_URL_BASE =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?Report=DEPTONECLASS";
   private final ClassPageFactory classPageFactory;
@@ -56,7 +56,7 @@ public class CoursePage {
   /**
    * @return map of unique class ids to ClassPage instances
    */
-  public Map<String, ClassPage> getClassPages() {
+  public Map<String, ClassPage> getChildPages() {
     Document document = getDocument();
     Elements courseLinks = document.select("#Tbl0 a[href]");
     Map<String, ClassPage> classPages = Maps.newHashMap();

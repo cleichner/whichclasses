@@ -1,16 +1,18 @@
 package com.whichclasses.scraper;
 
 import java.util.Map;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.http.HttpUtils;
 import com.whichclasses.scraper.CoursePage.CoursePageFactory;
 
-public class DepartmentPage {
+public class DepartmentPage implements ContainerPage<CoursePage> {
   private static final String DEPARTMENT_PAGE_URL_BASE =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?Report=DEPTCOURSE";
   private final AuthenticatedClient client;
@@ -48,7 +50,7 @@ public class DepartmentPage {
   /**
    * @return map of course titles (e.g. "ACCT 200A") to CoursePage instances
    */
-  public Map<String, CoursePage> getCoursePages() {
+  public Map<String, CoursePage> getChildPages() {
     Document document = getDocument();
     Elements courseLinks = document.select("#GV1 a[href]");
     Map<String, CoursePage> coursePages = Maps.newHashMap();

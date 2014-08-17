@@ -1,6 +1,5 @@
 package com.whichclasses.scraper;
 
-import java.util.List;
 import java.util.Map;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -17,14 +16,14 @@ public class Scraper {
   }
 
   public void runScrape() {
-    // For now: scrape one thing and build models for each. 
-    List<DepartmentPage> deptPages = deptListPage.getDepartmentPages();
-    DepartmentPage firstDepartment = deptPages.get(0);
+    // For now: scrape one thing and build models for each.
+    Map<String, DepartmentPage> deptPages = deptListPage.getChildPages();
+    DepartmentPage firstDepartment = deptPages.get("Accounting (ACCT)");
     System.out.println("Got department " + firstDepartment);
-    Map<String, CoursePage> coursePages = firstDepartment.getCoursePages();
+    Map<String, CoursePage> coursePages = firstDepartment.getChildPages();
     CoursePage firstCourse = coursePages.get(coursePages.keySet().iterator().next());
     System.out.println("Got course " + firstCourse);
-    Map<String, ClassPage> classPages = firstCourse.getClassPages();
+    Map<String, ClassPage> classPages = firstCourse.getChildPages();
     ClassPage firstClass = classPages.get(classPages.keySet().iterator().next());
     System.out.println("Got class " + firstClass);
   }
