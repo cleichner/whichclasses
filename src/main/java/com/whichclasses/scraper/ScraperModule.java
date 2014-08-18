@@ -5,6 +5,11 @@ import java.nio.file.FileSystems;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.whichclasses.scraper.cache.PageCache;
+import com.whichclasses.scraper.cache.PermanentHtmlDiskCache;
+import com.whichclasses.scraper.page.ClassPage;
+import com.whichclasses.scraper.page.CoursePage;
+import com.whichclasses.scraper.page.DepartmentPage;
 
 /**
  * Guice module for "production mode".

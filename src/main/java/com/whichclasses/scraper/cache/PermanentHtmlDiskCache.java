@@ -1,4 +1,4 @@
-package com.whichclasses.scraper;
+package com.whichclasses.scraper.cache;
 
 import java.io.File;
 import java.io.FileInputStream;

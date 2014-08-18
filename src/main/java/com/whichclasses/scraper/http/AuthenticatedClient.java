@@ -1,4 +1,4 @@
-package com.whichclasses.scraper;
+package com.whichclasses.scraper.http;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

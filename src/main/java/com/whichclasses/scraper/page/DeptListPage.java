@@ -1,4 +1,4 @@
-package com.whichclasses.scraper;
+package com.whichclasses.scraper.page;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ import org.jsoup.select.Elements;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.whichclasses.http.HttpUtils;
-import com.whichclasses.scraper.DepartmentPage.DepartmentPageFactory;
+import com.whichclasses.scraper.page.DepartmentPage.DepartmentPageFactory;
 
 public class DeptListPage extends CacheableLazyLoadedPage
     implements ContainerPage<DepartmentPage> {

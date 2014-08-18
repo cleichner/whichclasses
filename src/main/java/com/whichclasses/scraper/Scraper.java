@@ -5,6 +5,10 @@ import java.util.Map;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.whichclasses.scraper.page.ClassPage;
+import com.whichclasses.scraper.page.CoursePage;
+import com.whichclasses.scraper.page.DepartmentPage;
+import com.whichclasses.scraper.page.DeptListPage;
 
 public class Scraper {
 

@@ -1,4 +1,4 @@
-package com.whichclasses.scraper;
+package com.whichclasses.scraper.page;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;

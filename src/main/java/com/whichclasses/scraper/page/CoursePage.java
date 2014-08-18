@@ -1,4 +1,4 @@
-package com.whichclasses.scraper;
+package com.whichclasses.scraper.page;
 
 import java.util.Map;
 
@@ -11,7 +11,7 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.http.HttpUtils;
-import com.whichclasses.scraper.ClassPage.ClassPageFactory;
+import com.whichclasses.scraper.page.ClassPage.ClassPageFactory;
 
 /**
  * Represents the TCE page dealing with a single course (e.g. ACCT 200), but

@@ -1,4 +1,4 @@
-package com.whichclasses.scraper;
+package com.whichclasses.scraper.page;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.http.HttpUtils;
-import com.whichclasses.scraper.CoursePage.CoursePageFactory;
+import com.whichclasses.scraper.page.CoursePage.CoursePageFactory;
 
 public class DepartmentPage extends CacheableLazyLoadedPage implements ContainerPage<CoursePage> {
   private static final String DEPARTMENT_PAGE_URL_BASE =

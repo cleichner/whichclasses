@@ -1,4 +1,4 @@
-package com.whichclasses.scraper;
+package com.whichclasses.scraper.cache;
 
 import org.jsoup.nodes.Document;
 

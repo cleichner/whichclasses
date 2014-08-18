@@ -1,8 +1,10 @@
-package com.whichclasses.scraper;
+package com.whichclasses.scraper.page;
 
 import org.jsoup.nodes.Document;
 
 import com.google.inject.Inject;
+import com.whichclasses.scraper.cache.PageCache;
+import com.whichclasses.scraper.http.AuthenticatedClient;
 
 /**
  * Parent class for a page with the following behavior:
