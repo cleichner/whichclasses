@@ -27,11 +27,10 @@ public class DepartmentPage extends CacheableLazyLoadedPage implements Container
   }
 
   @Inject
-  public DepartmentPage(AuthenticatedClient client,
+  public DepartmentPage(
       CoursePageFactory coursePageFactory,
       @Assisted("DepartmentIdentifier") String identifier,
       @Assisted("DepartmentName") String name) {
-    super(client);
     this.coursePageFactory = coursePageFactory;
     this.identifier = identifier;
     this.name = name;

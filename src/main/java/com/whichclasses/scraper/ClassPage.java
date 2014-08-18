@@ -24,10 +24,8 @@ public class ClassPage extends CacheableLazyLoadedPage {
 
   @Inject
   public ClassPage(
-      AuthenticatedClient client,
       @Assisted("ClassId") String crsId,
       @Assisted("Semester") int trmCod) {
-    super(client);
     this.crsId = crsId;
     this.trmCod = trmCod;
   }

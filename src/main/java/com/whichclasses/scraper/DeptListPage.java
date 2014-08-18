@@ -19,8 +19,7 @@ public class DeptListPage extends CacheableLazyLoadedPage
   private final DepartmentPageFactory departmentPageFactory;
 
   @Inject
-  DeptListPage(AuthenticatedClient client, DepartmentPageFactory departmentPageFactory) {
-    super(client);
+  DeptListPage(DepartmentPageFactory departmentPageFactory) {
     this.departmentPageFactory = departmentPageFactory;
   }
 

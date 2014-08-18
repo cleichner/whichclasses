@@ -35,12 +35,10 @@ public class CoursePage extends CacheableLazyLoadedPage implements ContainerPage
 
   @Inject
   public CoursePage(
-      AuthenticatedClient client,
       ClassPageFactory classPageFactory,
       @Assisted("DepartmentIdentifier") String departmentId,
       @Assisted("CourseId") String id,
       @Assisted("CourseTitle") String title) {
-    super(client);
     this.classPageFactory = classPageFactory;
     this.id = id;
     this.title = title;
