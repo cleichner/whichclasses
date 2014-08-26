@@ -11,6 +11,7 @@ import com.google.inject.Inject;
 import com.whichclasses.http.HttpUtils;
 import com.whichclasses.scraper.Department;
 import com.whichclasses.scraper.DeptList;
+import com.whichclasses.scraper.model.DeptListModel;
 import com.whichclasses.scraper.page.DepartmentPage.DepartmentPageFactory;
 
 public class DeptListPage extends CacheableLazyLoadedPage implements DeptList {
@@ -18,6 +19,7 @@ public class DeptListPage extends CacheableLazyLoadedPage implements DeptList {
   private static final String DEPARTMENT_LIST_URL =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/DeptList.aspx";
   private final DepartmentPageFactory departmentPageFactory;
+  private DeptListModel model;
 
   @Inject
   DeptListPage(DepartmentPageFactory departmentPageFactory) {
@@ -29,8 +31,11 @@ public class DeptListPage extends CacheableLazyLoadedPage implements DeptList {
     return DEPARTMENT_LIST_URL;
   }
 
-  @Override
-  public Map<String, Department> getChildren() {
+  private DeptListModel getModel() {
+    if (model != null) {
+      return model;
+    }
+
     Document document = getDocument();
     Elements departmentLinks = document.select("#GV1 a[href]");
     Map<String, Department> departmentPages = Maps.newHashMap();
@@ -40,10 +45,14 @@ public class DeptListPage extends CacheableLazyLoadedPage implements DeptList {
         String departmentName = departmentLink.text();
         // TODO(gunsch): Reduce name in map to department code.
         departmentPages.put(departmentName,
-        		departmentPageFactory.create(departmentId, departmentName));
+                departmentPageFactory.create(departmentId, departmentName));
       }
     }
 
-    return departmentPages;
+    return model = new DeptListModel.Builder()
+        .setChildren(departmentPages)
+        .build();
   }
+
+  @Override public Map<String, Department> getChildren() { return getModel().getChildren(); }
 }

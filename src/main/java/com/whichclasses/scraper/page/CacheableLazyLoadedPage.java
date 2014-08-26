@@ -18,8 +18,6 @@ import com.whichclasses.scraper.http.AuthenticatedClient;
  */
 public abstract class CacheableLazyLoadedPage {
 
-  private Document document;
-
   // Being lazy by injecting these here. Oh well.
   @Inject private AuthenticatedClient httpClient;
   @Inject private PageCache pageHtmlCache;
@@ -30,22 +28,14 @@ public abstract class CacheableLazyLoadedPage {
   abstract String getHtmlUrl();
 
   Document getDocument() {
-    // TODO(gunsch): this is probably really memory-excessive to hold onto
-    // once model data is loaded. Consider a delegated Model class for each subclass.
-
-    // Return in-memory instance if available.
-    if (document != null)
-      return document;
-
     String htmlUrl = getHtmlUrl();
     Document documentFromCache = pageHtmlCache.get(htmlUrl);
     if (documentFromCache != null) {
-      document = documentFromCache;
-      return document;
+      return documentFromCache;
     }
 
-    document = httpClient.getPage(getHtmlUrl());
-    pageHtmlCache.store(htmlUrl, document);
-    return document;
+    Document documentFromHttp = httpClient.getPage(getHtmlUrl());
+    pageHtmlCache.store(htmlUrl, documentFromHttp);
+    return documentFromHttp;
   }
 }
