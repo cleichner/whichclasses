@@ -9,10 +9,11 @@ import org.jsoup.select.Elements;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.whichclasses.http.HttpUtils;
+import com.whichclasses.scraper.Department;
+import com.whichclasses.scraper.DeptList;
 import com.whichclasses.scraper.page.DepartmentPage.DepartmentPageFactory;
 
-public class DeptListPage extends CacheableLazyLoadedPage
-    implements ContainerPage<DepartmentPage> {
+public class DeptListPage extends CacheableLazyLoadedPage implements DeptList {
 
   private static final String DEPARTMENT_LIST_URL =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/DeptList.aspx";
@@ -28,13 +29,11 @@ public class DeptListPage extends CacheableLazyLoadedPage
     return DEPARTMENT_LIST_URL;
   }
 
-  /**
-   * @return a list of individual department pages from the department list page
-   */
-  public Map<String, DepartmentPage> getChildPages() {
+  @Override
+  public Map<String, Department> getChildren() {
     Document document = getDocument();
     Elements departmentLinks = document.select("#GV1 a[href]");
-    Map<String, DepartmentPage> departmentPages = Maps.newHashMap();
+    Map<String, Department> departmentPages = Maps.newHashMap();
     for (Element departmentLink : departmentLinks) {
       String departmentId = HttpUtils.getFirstQueryParameter(departmentLink.attr("href"), "crssub");
       if (departmentId != null && departmentId.length() > 0) {

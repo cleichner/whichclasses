@@ -10,9 +10,11 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.http.HttpUtils;
+import com.whichclasses.scraper.Course;
+import com.whichclasses.scraper.Department;
 import com.whichclasses.scraper.page.CoursePage.CoursePageFactory;
 
-public class DepartmentPage extends CacheableLazyLoadedPage implements ContainerPage<CoursePage> {
+public class DepartmentPage extends CacheableLazyLoadedPage implements Department {
   private static final String DEPARTMENT_PAGE_URL_BASE =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?"
       + "Report=DEPTCOURSE&crssub=%s";
@@ -44,19 +46,20 @@ public class DepartmentPage extends CacheableLazyLoadedPage implements Container
   /**
    * @return map of course titles (e.g. "ACCT 200A") to CoursePage instances
    */
-  public Map<String, CoursePage> getChildPages() {
+  @Override
+  public Map<String, Course> getChildren() {
     Document document = getDocument();
     Elements courseLinks = document.select("#GV1 a[href]");
-    Map<String, CoursePage> coursePages = Maps.newHashMap();
+    Map<String, Course> courses = Maps.newHashMap();
     for (Element courseLink : courseLinks) {
       String courseId = HttpUtils.getFirstQueryParameter(courseLink.attr("href"), "crsnum");
       if (courseId != null && courseId.length() > 0) {
         String courseTitle = courseLink.text();
-        coursePages.put(courseId, coursePageFactory.create(identifier, courseId, courseTitle));
+        courses.put(courseId, coursePageFactory.create(identifier, courseId, courseTitle));
       }
     }
 
-    return coursePages;
+    return courses;
   }
 
   @Override public String toString() {

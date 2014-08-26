@@ -7,7 +7,7 @@ import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.whichclasses.scraper.cache.PageCache;
 import com.whichclasses.scraper.cache.PermanentHtmlDiskCache;
-import com.whichclasses.scraper.page.ClassPage;
+import com.whichclasses.scraper.page.TceClassPage;
 import com.whichclasses.scraper.page.CoursePage;
 import com.whichclasses.scraper.page.DepartmentPage;
 
@@ -28,8 +28,8 @@ public class ScraperModule extends AbstractModule {
         .implement(CoursePage.class, CoursePage.class)
         .build(CoursePage.CoursePageFactory.class));
     install(new FactoryModuleBuilder()
-        .implement(ClassPage.class, ClassPage.class)
-        .build(ClassPage.ClassPageFactory.class));
+        .implement(TceClassPage.class, TceClassPage.class)
+        .build(TceClassPage.ClassPageFactory.class));
   }
 
   @Provides

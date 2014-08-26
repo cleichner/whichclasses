@@ -11,13 +11,15 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.http.HttpUtils;
-import com.whichclasses.scraper.page.ClassPage.ClassPageFactory;
+import com.whichclasses.scraper.Course;
+import com.whichclasses.scraper.TceClass;
+import com.whichclasses.scraper.page.TceClassPage.ClassPageFactory;
 
 /**
  * Represents the TCE page dealing with a single course (e.g. ACCT 200), but
  * not a single class (e.g. ACCT in Fall 2012 taught by Prof. Johnson).
  */
-public class CoursePage extends CacheableLazyLoadedPage implements ContainerPage<ClassPage> {
+public class CoursePage extends CacheableLazyLoadedPage implements Course {
   private static final String COURSE_PAGE_URL_BASE =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/"
       + "GenerateReport.aspx?Report=DEPTONECLASS&crssub=%s&crsnum=%s";
@@ -53,20 +55,21 @@ public class CoursePage extends CacheableLazyLoadedPage implements ContainerPage
   /**
    * @return map of unique class ids to ClassPage instances
    */
-  public Map<String, ClassPage> getChildPages() {
+  @Override
+  public Map<String, TceClass> getChildren() {
     Document document = getDocument();
     Elements courseLinks = document.select("#Tbl0 a[href]");
-    Map<String, ClassPage> classPages = Maps.newHashMap();
+    Map<String, TceClass> classes = Maps.newHashMap();
     for (Element courseLink : courseLinks) {
       String crsId = HttpUtils.getFirstQueryParameter(courseLink.attr("href"), "crsid");
       int trmCod = Integer.parseInt(
           HttpUtils.getFirstQueryParameter(courseLink.attr("href"), "trmcod"));
       if (trmCod > 0 && !Strings.isNullOrEmpty(crsId)) {
-        classPages.put(crsId, classPageFactory.create(crsId, trmCod));
+        classes.put(crsId, classPageFactory.create(crsId, trmCod));
       }
     }
 
-    return classPages;
+    return classes;
   }
 
   @Override public String toString() {

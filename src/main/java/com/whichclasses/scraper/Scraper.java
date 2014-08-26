@@ -5,30 +5,27 @@ import java.util.Map;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.whichclasses.scraper.page.ClassPage;
-import com.whichclasses.scraper.page.CoursePage;
-import com.whichclasses.scraper.page.DepartmentPage;
 import com.whichclasses.scraper.page.DeptListPage;
 
 public class Scraper {
 
-  private final DeptListPage deptListPage;
+  private final DeptList deptList;
 
   @Inject
   public Scraper(DeptListPage deptListPage) {
-    this.deptListPage = deptListPage;
+    this.deptList = deptListPage;
   }
 
   public void runScrape() {
     // For now: scrape one thing and build models for each.
-    Map<String, DepartmentPage> deptPages = deptListPage.getChildPages();
-    DepartmentPage firstDepartment = deptPages.get("Accounting (ACCT)");
+    Map<String, Department> depts = deptList.getChildren();
+    Department firstDepartment = depts.get("Accounting (ACCT)");
     System.out.println("Got department " + firstDepartment);
-    Map<String, CoursePage> coursePages = firstDepartment.getChildPages();
-    CoursePage firstCourse = coursePages.get(coursePages.keySet().iterator().next());
+    Map<String, Course> courses = firstDepartment.getChildren();
+    Course firstCourse = courses.get(courses.keySet().iterator().next());
     System.out.println("Got course " + firstCourse);
-    Map<String, ClassPage> classPages = firstCourse.getChildPages();
-    ClassPage firstClass = classPages.get(classPages.keySet().iterator().next());
+    Map<String, TceClass> classes = firstCourse.getChildren();
+    TceClass firstClass = classes.get(classes.keySet().iterator().next());
     System.out.println("Got class " + firstClass);
   }
 
