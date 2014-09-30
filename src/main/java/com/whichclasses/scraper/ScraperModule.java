@@ -17,7 +17,8 @@ import com.whichclasses.scraper.page.DepartmentPage;
 public class ScraperModule extends AbstractModule {
 
   // TCE disk cache location.
-  private static final String DISK_LOCATION = "/Users/jesse/data/whichclasses";
+  // TODO(gunsch): allow specifying by system property
+  private static final String DISK_LOCATION = "/Users/gunsch/data/whichclasses";
 
   @Override
   protected void configure() {

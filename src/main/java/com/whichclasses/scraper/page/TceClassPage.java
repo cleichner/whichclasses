@@ -1,7 +1,10 @@
 package com.whichclasses.scraper.page;
 
+import org.jsoup.nodes.Document;
+
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.whichclasses.model.TceClassModel;
 import com.whichclasses.scraper.TceClass;
 
 /**
@@ -13,10 +16,12 @@ public class TceClassPage extends CacheableLazyLoadedPage implements TceClass {
   private static final String CLASS_PAGE_URL_BASE =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?Report=ASUARep&"
       + "crsid=%s&trmcod=%s";
-  // TODO extract all of this to a separate model class.
+
   private final String crsId;
   private final int trmCod;
 
+  private TceClassModel model;
+  
   public interface ClassPageFactory {
     TceClassPage create(
         @Assisted("ClassId") String crsId,
@@ -37,5 +42,24 @@ public class TceClassPage extends CacheableLazyLoadedPage implements TceClass {
 
   @Override public String toString() {
     return "Class instance: " + crsId + ", taught in " + trmCod;
+  }
+
+  @Override public String getTitle() {
+    buildModelIfNecessary();
+    return model.getTitle();
+  }
+
+  private void buildModelIfNecessary() {
+    if (model != null) return;
+
+    // TODO: parse page here
+    Document page = getDocument();
+    System.out.println(page.toString());
+    
+    model = TceClassModel.newBuilder()
+        .setCourseId(crsId)
+        .setTermCode(trmCod)
+        .setTitle("Hello!")
+        .build();
   }
 }
