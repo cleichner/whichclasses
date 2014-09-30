@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -109,8 +110,8 @@ public class AuthenticatedClient {
     HttpPost loginRequest = new HttpPost(loginUri);
     loginRequest.setEntity(new UrlEncodedFormEntity(formPostData, Consts.UTF_8));
     try (CloseableHttpResponse loginResponse = client.execute(loginRequest)) {
-      // TODO 200 still occurs on login failure. Check for a better indicator.
-      if (loginResponse.getStatusLine().getStatusCode() != 200) {
+      String responseText = IOUtils.toString(loginResponse.getEntity().getContent());
+      if (responseText.contains("invalid NetID or password")) {
         throw new RuntimeException("Login failed!");
       }
     }
