@@ -9,3 +9,5 @@ Notes:
 * Need to parse TceClass page contents into meaningful data, including:
 ** Normalization of different questions
 ** Normalization of different answer ranges, thanks to 2011-12
+
+* Need to think about serving architecture.
