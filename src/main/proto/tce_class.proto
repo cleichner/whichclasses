@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+option java_package = "com.whichclasses.model";
+option java_outer_classname = "Unused";
+option java_multiple_files = true;
+
+package com.whichclasses.model;
+
+message TceClass {
+  optional string class_id = 1;
+}

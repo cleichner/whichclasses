@@ -3,6 +3,58 @@
   <groupId>com.whichclasses</groupId>
   <artifactId>scraper</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>protoc-plugin</id>
+      <url>http://sergei-ivanov.github.com/maven-protoc-plugin/repo/releases/</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <build>
+    <plugins>
+     <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>build-helper-maven-plugin</artifactId>
+      <executions>
+        <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>add-source</goal>
+            </goals>
+            <configuration>
+                <sources>
+                    <source>${project.build.directory}/generated-sources/java/</source>
+                </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.google.protobuf.tools</groupId>
+        <artifactId>maven-protoc-plugin</artifactId>
+        <version>0.3.2</version>
+        <configuration>
+          <protocExecutable>/usr/local/bin/protoc</protocExecutable>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
   <dependencies>
   	<dependency>
   		<groupId>org.jsoup</groupId>
@@ -34,5 +86,10 @@
 		  <artifactId>commons-io</artifactId>
 		  <version>2.4</version>
 		</dependency>
+  	<dependency>
+  		<groupId>com.google.protobuf</groupId>
+  		<artifactId>protobuf-java</artifactId>
+  		<version>2.6.0</version>
+  	</dependency>
   </dependencies>
 </project>
