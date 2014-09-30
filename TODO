@@ -1,0 +1,11 @@
+Notes:
+* Need to settle on how to do storage/indexing soon.
+* Requirements:
+** Primary source of truth is HTML files on disk. Parsed format should be
+   regenerated on the fly at server start time.
+** Ideally does indexing/searching. Don't want to reimplement.
+** Data is highly relational. Relational DB is best.
+
+* Need to parse TceClass page contents into meaningful data, including:
+** Normalization of different questions
+** Normalization of different answer ranges, thanks to 2011-12
