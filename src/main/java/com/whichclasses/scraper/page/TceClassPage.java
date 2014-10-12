@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.model.TceClassModel;
+import com.whichclasses.model.TceCourseIdentifier;
 import com.whichclasses.scraper.TceClass;
 
 /**
@@ -44,22 +45,13 @@ public class TceClassPage extends CacheableLazyLoadedPage implements TceClass {
     return "Class instance: " + crsId + ", taught in " + trmCod;
   }
 
-  @Override public String getTitle() {
+  @Override public TceClassModel getModel() {
     buildModelIfNecessary();
-    return model.getTitle();
+    return model;
   }
 
   private void buildModelIfNecessary() {
     if (model != null) return;
-
-    // TODO: parse page here
-    Document page = getDocument();
-    System.out.println(page.toString());
-    
-    model = TceClassModel.newBuilder()
-        .setCourseId(crsId)
-        .setTermCode(trmCod)
-        .setTitle("Hello!")
-        .build();
+    model = TceClassPageParser.parseTceClassPage(getDocument());
   }
 }

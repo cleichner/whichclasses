@@ -5,8 +5,84 @@ option java_multiple_files = true;
 
 package com.whichclasses.model;
 
+// File note:
+// None of the data using these protos are persisted. Reordering the
+// proto at any time is acceptable.
+
+message TceCourseIdentifier {
+  optional string department = 1;
+  
+  // Note: course "number" may have letters, e.g. "522T"
+  optional string course_number = 2;
+}
+
 message TceClassModel {
-  optional string course_id = 1;
-  optional int32 term_code = 2;
+  optional TceCourseIdentifier identifier = 1;
+  // term code is generally a number, but may have leading zeroes.
+  optional string term_code = 2;
+
   optional string title = 3;
+  optional string instructor = 4;
+
+  // TODO: figure out if this is important. Can it be an enum?
+  // optional string activity = 5;
+
+  optional int32 students_enrolled = 6;
+  optional int32 students_responded = 7;
+
+  repeated TceRating rating = 8;
+
+}
+
+message TceRating {
+  enum Question {
+    // "What is your overall rating of this instructor's teaching effectiveness?"
+    OVERALL_INSTRUCTOR_RATING = 1;
+
+    // "What is your rating of this instructor compared with other instructors you have had?"
+    COMPARATIVE_INSTRUCTOR_RATING = 2;
+
+	// "What is your overall rating of this course?"
+	OVERALL_COURSE_RATING = 3;
+
+    // "How much do you feel you have learned in this course?"
+    COURSE_LEARNING = 4;
+
+	// "How difficult was this course for you?"
+	COURSE_DIFFICULTY = 5;
+
+	// "Rate the usefulness of the outside assignments (homework, papers, reports, and special projects, etc.) in helping you learn."
+    EXTERNAL_WORK_RATING = 6;
+
+    // "Rate the overall usefulness of in-class meeting time activities (e.g. lectures, discussions, teamwork, labs, etc.) in helping you achieve important course goals and objectives"
+    INTERNAL_WORK_RATING = 7;
+
+	// "The materials used in this course (text, readings, websites, etc.) are."
+	COURSE_MATERIALS_RATING = 8;
+
+	// "I was treated with respect in this class."
+	INSTRUCTOR_RESPECT = 9;
+
+	// "Outside of class time, about how many hours per week have you spent on class-related work (reading, reviewing notes, writing papers, team meetings, etc.)?"
+    TIME_SPENT_EXTERNALLY = 10;
+
+	// "Of the total hours you spent on this class, how many were valuable in advancing your education?."
+    TIME_VALUE_RATING = 11;
+  }
+
+  optional Question question = 1;
+
+  // Number of votes for a specific value of this question
+  message ScoreCount {
+    // "Value index" starts with 0 and goes up based on
+    // ordering in the page. This makes the assumption that
+    // the ordering is consistent across all pages for the
+    // same type of question. This will need to be rethought
+    // if that assumption is found to be false.
+    optional int32 value_index = 1;
+    optional int32 count = 2;
+  }
+  repeated ScoreCount rating = 2;
+
+  optional int32 omits = 3;
 }

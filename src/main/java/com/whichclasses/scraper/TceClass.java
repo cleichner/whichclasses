@@ -1,5 +1,7 @@
 package com.whichclasses.scraper;
 
+import com.whichclasses.model.TceClassModel;
+
 public interface TceClass {
-  public String getTitle();
+  public TceClassModel getModel();
 }

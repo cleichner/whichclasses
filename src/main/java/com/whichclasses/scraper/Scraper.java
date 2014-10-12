@@ -27,7 +27,7 @@ public class Scraper {
     Map<String, TceClass> classes = firstCourse.getChildren();
     TceClass firstClass = classes.get(classes.keySet().iterator().next());
     System.out.println("Got class " + firstClass);
-    System.out.println("Title: " + firstClass.getTitle());
+    System.out.println("Class: " + firstClass.getModel());
   }
 
   public static void main(String[] args) throws Exception {
