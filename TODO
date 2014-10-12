@@ -11,3 +11,8 @@ Notes:
 ** Normalization of different answer ranges, thanks to 2011-12
 
 * Need to think about serving architecture.
+
+Bugs to resolve:
+* Questions not parsed to enums
+* Term strings not parsed to term codes (less important for now)
+* Invalid pages (not logged in, load failures, etc.) shouldn't be saved/cached.

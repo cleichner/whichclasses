@@ -22,12 +22,16 @@ public class Scraper {
     Department firstDepartment = depts.get("Accounting (ACCT)");
     System.out.println("Got department " + firstDepartment);
     Map<String, Course> courses = firstDepartment.getChildren();
-    Course firstCourse = courses.get(courses.keySet().iterator().next());
-    System.out.println("Got course " + firstCourse);
-    Map<String, TceClass> classes = firstCourse.getChildren();
-    TceClass firstClass = classes.get(classes.keySet().iterator().next());
-    System.out.println("Got class " + firstClass);
-    System.out.println("Class: " + firstClass.getModel());
+
+    for (Course oneCourse : courses.values()) {
+      System.out.println("Got course " + oneCourse);
+      Map<String, TceClass> classes = oneCourse.getChildren();
+      for (TceClass oneClass : classes.values()) {
+        System.out.println("Got class " + oneClass);
+        System.out.println("Class: " + oneClass.getModel());
+      }
+    }
+
   }
 
   public static void main(String[] args) throws Exception {
