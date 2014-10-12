@@ -1,11 +1,8 @@
 package com.whichclasses.scraper.page;
 
-import org.jsoup.nodes.Document;
-
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.model.TceClassModel;
-import com.whichclasses.model.TceCourseIdentifier;
 import com.whichclasses.scraper.TceClass;
 
 /**

@@ -1,12 +1,12 @@
 package com.whichclasses.scraper.page;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import com.google.common.base.Predicate;
@@ -14,12 +14,16 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.whichclasses.model.TceClassModel;
 import com.whichclasses.model.TceCourseIdentifier;
+import com.whichclasses.model.TceRating;
+import com.whichclasses.model.TceRating.Question;
+import com.whichclasses.model.TceRating.ScoreCount;
 
 public final class TceClassPageParser {
 
   @SuppressWarnings("serial")
   private static class ParserException extends RuntimeException {
     public ParserException(String message) { super(message); }
+    public ParserException(String message, Throwable e) { super(message, e); }
   }
   
   public static TceClassModel parseTceClassPage(Document page) {
@@ -45,14 +49,18 @@ public final class TceClassPageParser {
       // 2+ spaces signal end of title
       "[\\u00a0\\s][\\u00a0\\s]+" +
       ".*");
-  private final Document page;
   private final Element metadataTable;
   private final Element questionsTable;
   
   private TceClassPageParser(Document page) {
-    this.page = page;
     this.metadataTable = assertElement(page.getElementById(METADATA_TABLE_ID));
     this.questionsTable = assertElement(page.getElementById(QUESTIONS_TABLE_ID));
+  }
+
+  private enum QuestionParsingState {
+    STATE_INITIAL,
+    STATE_EXPECTING_QUESTION,
+    STATE_READING_RESULTS,
   }
   
   private TceClassModel buildModel() {
@@ -68,12 +76,82 @@ public final class TceClassPageParser {
     String courseTitle = courseRowMatcher.group(3);
 
     Element instructorRow = getElementTagNameContainingText(metadataTable, "tr", "Instructor:");
-    String instructor = instructorRow.child(1).text().trim();
+    String instructor = strip(instructorRow.child(1).text());
 
     Element termRow = getElementTagNameContainingText(metadataTable, "tr", "Term:");
-    String termString = termRow.child(1).text().trim();
+    String termString = strip(termRow.child(1).text());
 
-    // TODO: question parsing.
+    // table --> tbody --> [tr]
+    Elements questionRows = questionsTable.children().first().children();
+    List<TceRating> questionResults = Lists.newArrayListWithCapacity(questionRows.size());
+
+    QuestionParsingState state = QuestionParsingState.STATE_INITIAL;
+    TceRating.Builder builder = null;
+    int valueIndex = 0;
+    for (Element questionRow : questionRows) {
+      switch (state) {
+        case STATE_INITIAL: {
+          // Skip the first row (header).
+          state = QuestionParsingState.STATE_EXPECTING_QUESTION;
+          break;
+        }
+
+        case STATE_READING_RESULTS: {
+          if (questionRow.children().size() == 1) {
+            // This is a new question. Intentional fall-through to below.
+          } else {
+            if (questionRow.text().contains("omits")) {
+              assertSize(2, questionRow.children());
+              builder.setOmits(Integer.parseInt(strip(questionRow.child(1).text()), 10));
+              state = QuestionParsingState.STATE_EXPECTING_QUESTION;
+              break;
+            }
+            
+            // Expect consistent format for results.
+            assertSize(6, questionRow.children());
+
+            // Fifth column should be a parseable number.
+            try {
+              builder.addRating(ScoreCount.newBuilder()
+                  .setValueIndex(valueIndex)
+                  .setCount(Integer.parseInt(strip(questionRow.child(4).text()), 10)));
+              valueIndex++;
+            } catch (NumberFormatException e) {
+              throw new ParserException("Could not parse frequency", e);
+            }
+
+            break;
+          }
+        }
+
+        case STATE_EXPECTING_QUESTION: {
+          if (builder != null) {
+            questionResults.add(builder.build());
+            builder = null;
+            state = QuestionParsingState.STATE_EXPECTING_QUESTION;
+          }
+
+          String questionText = questionRow.text();
+          builder = TceRating.newBuilder()
+              // TODO: which question is this? Different wordings map to
+              // the same concept here. Translate from questionText, throw
+              // if unrecognized.
+              .setQuestion(Question.OVERALL_COURSE_RATING);
+          state = QuestionParsingState.STATE_READING_RESULTS;
+          valueIndex = 0;
+
+          System.out.println(questionText);
+          break;
+        }
+
+        default: {
+          throw new IllegalStateException();
+        }
+      }
+    }
+    if (builder != null) {
+      questionResults.add(builder.build());
+    }
 
     return TceClassModel.newBuilder()
         .setIdentifier(TceCourseIdentifier.newBuilder()
@@ -82,6 +160,7 @@ public final class TceClassPageParser {
         .setInstructor(instructor)
         .setTermCode(buildTermCode(termString))
         .setTitle(courseTitle)
+        .addAllRating(questionResults)
         .build();
   }
 
@@ -121,4 +200,19 @@ public final class TceClassPageParser {
     return elements.iterator().next();
   }
 
+  private void assertSize(int expected, Collection<Element> elements) {
+    if (elements.size() != expected) {
+      throw new ParserException("Expected exactly six cells per rating row, got "
+          + elements.size());
+    }
+  }
+
+  /**
+   * Like trim, but removes all nbsp.
+   * @param original
+   * @return
+   */
+  private String strip(String original) {
+    return original.replaceAll("[\\u00a0\\s]", " ").trim();
+  }
 }
