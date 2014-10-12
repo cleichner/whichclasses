@@ -140,7 +140,6 @@ public final class TceClassPageParser {
           state = QuestionParsingState.STATE_READING_RESULTS;
           valueIndex = 0;
 
-          System.out.println(questionText);
           break;
         }
 
