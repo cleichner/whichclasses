@@ -2,8 +2,9 @@ package com.whichclasses.scraper.page;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.whichclasses.model.TceClass;
 import com.whichclasses.model.TceClassModel;
-import com.whichclasses.scraper.TceClass;
+import com.whichclasses.model.proto.TceClassProto;
 
 /**
  * Represents the TCE page dealing with a single instance of a course (e.g.
@@ -18,7 +19,7 @@ public class TceClassPage extends CacheableLazyLoadedPage implements TceClass {
   private final String crsId;
   private final int trmCod;
 
-  private TceClassModel model;
+  private TceClassProto model;
   
   public interface ClassPageFactory {
     TceClassPage create(
@@ -42,9 +43,13 @@ public class TceClassPage extends CacheableLazyLoadedPage implements TceClass {
     return "Class instance: " + crsId + ", taught in " + trmCod;
   }
 
-  @Override public TceClassModel getModel() {
+  @Override public TceClassProto getProto() {
     buildModelIfNecessary();
     return model;
+  }
+
+  @Override public TceClassModel getModel() {
+    return null;
   }
 
   private void buildModelIfNecessary() {

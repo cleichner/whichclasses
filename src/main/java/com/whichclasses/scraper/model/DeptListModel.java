@@ -2,8 +2,8 @@ package com.whichclasses.scraper.model;
 
 import java.util.Map;
 
-import com.whichclasses.scraper.Department;
-import com.whichclasses.scraper.DeptList;
+import com.whichclasses.model.Department;
+import com.whichclasses.model.DeptList;
 
 public class DeptListModel implements DeptList {
 

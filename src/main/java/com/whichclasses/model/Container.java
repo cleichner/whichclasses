@@ -1,4 +1,4 @@
-package com.whichclasses.scraper;
+package com.whichclasses.model;
 
 import java.util.Map;
 

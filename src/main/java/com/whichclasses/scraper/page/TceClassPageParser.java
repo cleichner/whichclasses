@@ -12,11 +12,11 @@ import org.jsoup.select.Elements;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import com.whichclasses.model.TceClassModel;
-import com.whichclasses.model.TceCourseIdentifier;
-import com.whichclasses.model.TceRating;
-import com.whichclasses.model.TceRating.Question;
-import com.whichclasses.model.TceRating.ScoreCount;
+import com.whichclasses.model.proto.TceClassProto;
+import com.whichclasses.model.proto.TceCourseIdentifier;
+import com.whichclasses.model.proto.TceRating;
+import com.whichclasses.model.proto.TceRating.Question;
+import com.whichclasses.model.proto.TceRating.ScoreCount;
 
 public final class TceClassPageParser {
 
@@ -26,7 +26,7 @@ public final class TceClassPageParser {
     public ParserException(String message, Throwable e) { super(message, e); }
   }
   
-  public static TceClassModel parseTceClassPage(Document page) {
+  public static TceClassProto parseTceClassPage(Document page) {
     return new TceClassPageParser(page).buildModel();
   }
 
@@ -63,7 +63,7 @@ public final class TceClassPageParser {
     STATE_READING_RESULTS,
   }
   
-  private TceClassModel buildModel() {
+  private TceClassProto buildModel() {
     // The entire course row is a jumble.
     String courseRowText = getElementTagNameContainingText(metadataTable, "tr", "Course:").text();
     Matcher courseRowMatcher = COURSE_ROW_PATTERN.matcher(courseRowText);
@@ -152,7 +152,7 @@ public final class TceClassPageParser {
       questionResults.add(builder.build());
     }
 
-    return TceClassModel.newBuilder()
+    return TceClassProto.newBuilder()
         .setIdentifier(TceCourseIdentifier.newBuilder()
             .setDepartment(department)
             .setCourseNumber(courseNumber))

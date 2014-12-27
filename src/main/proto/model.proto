@@ -1,9 +1,9 @@
 syntax = "proto2";
 
-option java_package = "com.whichclasses.model";
+option java_package = "com.whichclasses.model.proto";
 option java_multiple_files = true;
 
-package com.whichclasses.model;
+package com.whichclasses.model.proto;
 
 // File note:
 // None of the data using these protos are persisted. Reordering the
@@ -16,7 +16,7 @@ message TceCourseIdentifier {
   optional string course_number = 2;
 }
 
-message TceClassModel {
+message TceClassProto {
   optional TceCourseIdentifier identifier = 1;
   // term code is generally a number, but may have leading zeroes.
   optional string term_code = 2;

@@ -11,8 +11,8 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.http.HttpUtils;
-import com.whichclasses.scraper.Course;
-import com.whichclasses.scraper.TceClass;
+import com.whichclasses.model.Course;
+import com.whichclasses.model.TceClass;
 import com.whichclasses.scraper.page.TceClassPage.ClassPageFactory;
 
 /**

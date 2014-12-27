@@ -5,6 +5,10 @@ import java.util.Map;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.whichclasses.model.Course;
+import com.whichclasses.model.Department;
+import com.whichclasses.model.DeptList;
+import com.whichclasses.model.TceClass;
 import com.whichclasses.scraper.page.DeptListPage;
 
 public class Scraper {
@@ -28,7 +32,7 @@ public class Scraper {
       Map<String, TceClass> classes = oneCourse.getChildren();
       for (TceClass oneClass : classes.values()) {
         System.out.println("Got class " + oneClass);
-        System.out.println("Class: " + oneClass.getModel());
+        System.out.println("Class: " + oneClass.getProto());
       }
     }
 

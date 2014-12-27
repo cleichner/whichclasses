@@ -10,8 +10,8 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.http.HttpUtils;
-import com.whichclasses.scraper.Course;
-import com.whichclasses.scraper.Department;
+import com.whichclasses.model.Course;
+import com.whichclasses.model.Department;
 import com.whichclasses.scraper.page.CoursePage.CoursePageFactory;
 
 public class DepartmentPage extends CacheableLazyLoadedPage implements Department {

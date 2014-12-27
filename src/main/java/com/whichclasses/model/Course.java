@@ -1,4 +1,5 @@
-package com.whichclasses.scraper;
+package com.whichclasses.model;
+
 
 public interface Course extends Container<TceClass> {
 }
