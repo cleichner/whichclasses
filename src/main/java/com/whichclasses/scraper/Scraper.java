@@ -32,7 +32,7 @@ public class Scraper {
       Map<String, TceClass> classes = oneCourse.getChildren();
       for (TceClass oneClass : classes.values()) {
         System.out.println("Got class " + oneClass);
-        System.out.println("Class: " + oneClass.getProto());
+        System.out.println("Class: " + oneClass.getModel().toString());
       }
     }
 
