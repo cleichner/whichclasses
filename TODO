@@ -12,6 +12,7 @@ Notes:
 * Start bringing up a simple frontend. Thoughts:
 ** Try out Angular. Figure out what freemarker looks like for that.
 ** Bootstrap / etc.
+** Add a PushStrategy to Jetty once we have a handle on needed resources
 
 * Put together more request servlets:
 ** All of the courses in a department (with sorting qualifiers?)

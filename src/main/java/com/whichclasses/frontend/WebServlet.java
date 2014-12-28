@@ -13,16 +13,23 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+/**
+ * Serves the single frontend template. All page content is loaded via
+ * Angular-based frontend.
+ */
 @SuppressWarnings("serial")
-public class HomeServlet extends HttpServlet {
+public class WebServlet extends HttpServlet {
 
   private static final String HOME_TEMPLATE = "home.tpl";
 
-  private Template template;
+  private final Configuration mConfiguration;
+  private Template mTemplate;
 
-  @Inject public HomeServlet(Configuration configuration) {
+  @Inject public WebServlet(Configuration configuration) {
+    mConfiguration = configuration;
+
     try {
-      template = configuration.getTemplate(HOME_TEMPLATE);
+      mTemplate = configuration.getTemplate(HOME_TEMPLATE);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -31,11 +38,15 @@ public class HomeServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    // TODO: extract to common TemplateServlet base class.
     response.setStatus(HttpServletResponse.SC_OK);
     response.setContentType("text/html");
     try {
-      template.process(null, response.getWriter());
+      // TODO don't do this in prod. This is for rebuilding the template from disk.
+      if (true) {
+        mTemplate = mConfiguration.getTemplate(HOME_TEMPLATE);
+      }
+
+      mTemplate.process(null, response.getWriter());
     } catch (TemplateException e) {
       throw new ServletException(e);
     }
