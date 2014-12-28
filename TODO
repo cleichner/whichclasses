@@ -11,6 +11,12 @@ Notes:
 ** Normalization of different answer ranges, thanks to 2011-12
 
 * Need to think about serving architecture.
+* Put together some simple request servlets so as to clarify end-to-end requests:
+** All of the departments
+** All of the courses in a department (with qualifiers)
+** Details for a single course / class
+
+* Add some simple calculation helpers for getting confidence interval and score
 
 Bugs to resolve:
 * Questions not parsed to enums
