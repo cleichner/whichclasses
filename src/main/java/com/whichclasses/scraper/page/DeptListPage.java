@@ -8,9 +8,9 @@ import org.jsoup.select.Elements;
 
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
-import com.whichclasses.http.HttpUtils;
 import com.whichclasses.model.Department;
 import com.whichclasses.model.DeptList;
+import com.whichclasses.scraper.http.HttpUtils;
 import com.whichclasses.scraper.model.DeptListModel;
 import com.whichclasses.scraper.page.DepartmentPage.DepartmentPageFactory;
 

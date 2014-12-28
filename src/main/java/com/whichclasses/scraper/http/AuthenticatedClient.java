@@ -26,7 +26,6 @@ import org.jsoup.select.Elements;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.whichclasses.http.HttpUtilsSucksRedirectStrategy;
 
 /**
  * Makes all Http requests to the TCE website, authenticating

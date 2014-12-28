@@ -1,4 +1,4 @@
-package com.whichclasses.http;
+package com.whichclasses.scraper.http;
 
 import java.net.URI;
 import org.apache.http.ProtocolException;
