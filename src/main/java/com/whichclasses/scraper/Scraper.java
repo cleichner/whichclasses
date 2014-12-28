@@ -2,9 +2,7 @@ package com.whichclasses.scraper;
 
 import java.util.Map;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.whichclasses.model.Course;
 import com.whichclasses.model.Department;
 import com.whichclasses.model.DeptList;
@@ -36,10 +34,5 @@ public class Scraper {
       }
     }
 
-  }
-
-  public static void main(String[] args) throws Exception {
-    Injector injector = Guice.createInjector(new ScraperModule());
-    injector.getInstance(Scraper.class).runScrape();
   }
 }
