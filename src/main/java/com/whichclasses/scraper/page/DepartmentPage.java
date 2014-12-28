@@ -38,16 +38,17 @@ public class DepartmentPage extends CacheableLazyLoadedPage implements Departmen
     this.name = name;
   }
 
-  @Override
-  String getHtmlUrl() {
+  @Override public String getShortName() { return identifier; }
+  @Override public String getFullName() { return name; }
+  
+  @Override String getHtmlUrl() {
     return String.format(DEPARTMENT_PAGE_URL_BASE, identifier);
   }
 
   /**
    * @return map of course titles (e.g. "ACCT 200A") to CoursePage instances
    */
-  @Override
-  public Map<String, Course> getChildren() {
+  @Override public Map<String, Course> getChildren() {
     Document document = getDocument();
     Elements courseLinks = document.select("#GV1 a[href]");
     Map<String, Course> courses = Maps.newHashMap();

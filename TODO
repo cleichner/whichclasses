@@ -1,22 +1,23 @@
 Notes:
-* Need to settle on how to do storage/indexing soon.
-* Requirements:
+* Need to settle on how to do indexing/searching soon.
 ** Primary source of truth is HTML files on disk. Parsed format should be
    regenerated on the fly at server start time.
-** Ideally does indexing/searching. Don't want to reimplement.
-** Data is highly relational. Relational DB is best.
+** Ideally don't want to reimplement indexing/searching.
+** Data is highly relational. Relational DB might be best.
 
 * Need to parse TceClass page contents into meaningful data, including:
 ** Normalization of different questions
 ** Normalization of different answer ranges, thanks to 2011-12
 
-* Need to think about serving architecture.
-* Put together some simple request servlets so as to clarify end-to-end requests:
-** All of the departments
-** All of the courses in a department (with qualifiers)
+* Start bringing up a simple frontend. Thoughts:
+** Try out Angular. Figure out what freemarker looks like for that.
+** Bootstrap / etc.
+
+* Put together more request servlets:
+** All of the courses in a department (with sorting qualifiers?)
 ** Details for a single course / class
-* Add a LoggingHandlerWrapper for logging/tracing of requests. Make sure it
-  does not block actual responses.
+** [Low-priority] add a LoggingHandlerWrapper for logging/tracing of requests. Make sure it
+   does not block actual responses.
 
 * TceClassModel:
 * Add some simple calculation helpers for getting confidence interval and score

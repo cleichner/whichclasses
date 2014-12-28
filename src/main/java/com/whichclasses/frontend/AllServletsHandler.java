@@ -8,9 +8,9 @@ import com.google.inject.Inject;
 public class AllServletsHandler extends ServletContextHandler {
 
   @Inject public AllServletsHandler(
-      HomeServlet homeServlet,
-      DummyServlet dummyServlet) {
-    addServlet(new ServletHolder(dummyServlet), "/dummy");
+      DeptListApiServlet deptListApiServlet,
+      HomeServlet homeServlet) {
+    addServlet(new ServletHolder(deptListApiServlet), "/api/departments");
     addServlet(new ServletHolder(homeServlet), "/");
   }
 }
