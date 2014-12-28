@@ -4,23 +4,24 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 import com.whichclasses.model.Course;
+import com.whichclasses.model.DataSource;
 import com.whichclasses.model.Department;
 import com.whichclasses.model.DeptList;
 import com.whichclasses.model.TceClass;
 import com.whichclasses.scraper.page.DeptListPage;
 
-public class Scraper {
+public class Scraper implements DataSource {
 
-  private final DeptList deptList;
+  private final DeptList mDeptList;
 
   @Inject
   public Scraper(DeptListPage deptListPage) {
-    this.deptList = deptListPage;
+    this.mDeptList = deptListPage;
   }
 
   public void runScrape() {
     // For now: scrape one thing and build models for each.
-    Map<String, Department> depts = deptList.getChildren();
+    Map<String, Department> depts = mDeptList.getChildren();
     Department firstDepartment = depts.get("Accounting (ACCT)");
     System.out.println("Got department " + firstDepartment);
     Map<String, Course> courses = firstDepartment.getChildren();
@@ -34,5 +35,10 @@ public class Scraper {
       }
     }
 
+  }
+
+  @Override
+  public DeptList getDepartmentList() {
+    return mDeptList;
   }
 }

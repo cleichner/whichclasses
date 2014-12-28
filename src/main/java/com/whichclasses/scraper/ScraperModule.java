@@ -5,6 +5,7 @@ import java.nio.file.FileSystems;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.whichclasses.model.DataSource;
 import com.whichclasses.scraper.cache.PageCache;
 import com.whichclasses.scraper.cache.PermanentHtmlDiskCache;
 import com.whichclasses.scraper.page.TceClassPage;
@@ -31,6 +32,10 @@ public class ScraperModule extends AbstractModule {
     install(new FactoryModuleBuilder()
         .implement(TceClassPage.class, TceClassPage.class)
         .build(TceClassPage.ClassPageFactory.class));
+
+    // When using Scraper, it acts as a generic DataSource for TCE data.
+    // This may need to be separated into its own optional module if there's ever a conflict.
+    bind(DataSource.class).to(Scraper.class);
   }
 
   @Provides

@@ -1,22 +1,20 @@
 package com.whichclasses;
 
-import org.eclipse.jetty.server.Server;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.whichclasses.http.Frontend;
+import com.whichclasses.http.WhichClassesServerModule;
 import com.whichclasses.scraper.Scraper;
 import com.whichclasses.scraper.ScraperModule;
 
 public class WhichClasses {
 
   public static void main(String[] args) throws Exception {
-    Injector injector = Guice.createInjector(new ScraperModule());
+    Injector injector = Guice.createInjector(
+        new ScraperModule(),
+        new WhichClassesServerModule());
     injector.getInstance(Scraper.class).runScrape();
-
-    // TODO: Guice this up
-    Server server = new Server(8080);
-    server.start();
-    server.join();
+    injector.getInstance(Frontend.class).startServing();
   }
 
 }
