@@ -15,7 +15,10 @@ Notes:
 ** All of the departments
 ** All of the courses in a department (with qualifiers)
 ** Details for a single course / class
+* Add a LoggingHandlerWrapper for logging/tracing of requests. Make sure it
+  does not block actual responses.
 
+* TceClassModel:
 * Add some simple calculation helpers for getting confidence interval and score
 
 Bugs to resolve:
