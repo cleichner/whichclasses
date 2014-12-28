@@ -1,4 +1,4 @@
-package com.whichclasses.http;
+package com.whichclasses.frontend;
 
 /**
  * An Http Frontend for serving content.

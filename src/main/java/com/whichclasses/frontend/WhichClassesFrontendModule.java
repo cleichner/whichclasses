@@ -1,4 +1,4 @@
-package com.whichclasses.http;
+package com.whichclasses.frontend;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;

@@ -4,8 +4,8 @@ import java.util.logging.Logger;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.whichclasses.http.Frontend;
-import com.whichclasses.http.WhichClassesFrontendModule;
+import com.whichclasses.frontend.Frontend;
+import com.whichclasses.frontend.WhichClassesFrontendModule;
 import com.whichclasses.scraper.Scraper;
 import com.whichclasses.scraper.ScraperModule;
 

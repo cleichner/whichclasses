@@ -1,4 +1,4 @@
-package com.whichclasses.http;
+package com.whichclasses.frontend;
 
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
