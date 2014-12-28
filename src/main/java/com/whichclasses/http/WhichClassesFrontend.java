@@ -9,18 +9,15 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.google.inject.Inject;
-import com.whichclasses.model.DataSource;
 
 public class WhichClassesFrontend implements Frontend {
 
-  private final DataSource mDataSource;
+  private final AllServletsHandler mServletHandler;
 
-  @Inject public WhichClassesFrontend(DataSource dataSource) {
-    mDataSource = dataSource;
+  @Inject public WhichClassesFrontend(AllServletsHandler servletHandler) {
+    mServletHandler = servletHandler;
   }
 
   @Override public void startServing() throws Exception {
@@ -40,11 +37,9 @@ public class WhichClassesFrontend implements Frontend {
     resourceContextHandler.setHandler(resourceHandler);
     orderedHandlers.add(resourceContextHandler);
 
-    // Servlets for handling all API calls.
-    ServletContextHandler servletHandler = new ServletContextHandler();
-    servletHandler.setContextPath("/");
-    servletHandler.addServlet(new ServletHolder(new DummyServlet()), "/dummy");
-    orderedHandlers.add(servletHandler);
+    // Servlets for handling all API calls and default templates.
+    mServletHandler.setContextPath("/");
+    orderedHandlers.add(mServletHandler);
 
     // Last: Serve a 404.
     DefaultHandler defaultHandler = new DefaultHandler();

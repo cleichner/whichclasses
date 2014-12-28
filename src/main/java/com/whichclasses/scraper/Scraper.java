@@ -30,8 +30,8 @@ public class Scraper implements DataSource {
       System.out.println("Got course " + oneCourse);
       Map<String, TceClass> classes = oneCourse.getChildren();
       for (TceClass oneClass : classes.values()) {
-        System.out.println("Got class " + oneClass);
-        System.out.println("Class: " + oneClass.getModel().toString());
+//        System.out.println("Got class " + oneClass);
+//        System.out.println("Class: " + oneClass.getModel().toString());
       }
     }
 
