@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp" class="no-js">
+<html lang="en" ng-app="whichclasses" class="no-js">
 <head>
+  <!-- <base href="/"> -->
   <meta charset="utf-8">
   <title>Whichclasses.com</title>
   <meta name="description" content="">
@@ -9,16 +10,16 @@
 </head>
 <body>
   <ul class="menu">
-    <li><a href="#/view1">view1</a></li>
-    <li><a href="#/view2">view2</a></li>
+    <li><a href="/">home</a></li>
+    <li><a href="/nowhere">not-implemented</a></li>
   </ul>
 
   <div ng-view></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular-route.min.js"></script>
+  <!-- TODO: use .min versions for prod -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular-route.js"></script>
   <script src="/static/app.js"></script>
-  <script src="/static/view1/view1.js"></script>
-  <script src="/static/view2/view2.js"></script>
+  <script src="/static/home/home.js"></script>
 </body>
 </html>

@@ -1,11 +1,23 @@
 'use strict';
 
+// TODO(optional): wrap in Closure support? Jetty could auto-recompile etc.
+var wc = {};
+
 // Declare app level module which depends on views, and components
-angular.module('myApp', [
+wc.module = angular.module('whichclasses', [
   'ngRoute',
-  'myApp.view1',
-  'myApp.view2'
-]).
-config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/view1'});
-}]);
+  'wc.home',
+]);
+
+// Global config.
+wc.module.config([
+  '$routeProvider',
+  '$locationProvider',
+  function($routeProvider, $locationProvider) {
+    $routeProvider.otherwise({redirectTo: '/'});
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: false
+    });
+  }
+]);
