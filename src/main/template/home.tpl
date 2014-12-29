@@ -19,7 +19,9 @@
   <!-- TODO: use .min versions for prod -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular-route.js"></script>
-  <script src="/static/app.js"></script>
+  <!-- TODO: look into HTTP/2 "server push" these -->
+  <script src="/static/components/tce_data_service.js"></script>
   <script src="/static/home/home.js"></script>
+  <script src="/static/app.js"></script>
 </body>
 </html>

@@ -1,14 +1,13 @@
 'use strict';
 
-angular.module('wc.home', ['ngRoute'])
+var wc = typeof wc == 'undefined' ? {} : wc;
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/', {
-    templateUrl: '/static/home/home.html',
-    controller: 'HomeCtrl'
-  });
-}])
+/**
+ * Home-page controller.
+ * @param deptList {!Array}
+ */
+wc.HomeCtrl = function($scope, deptList) {
+  $scope.deptList = deptList;
+};
 
-.controller('HomeCtrl', [function() {
-
-}]);
+wc.HomeCtrl.angular = ['$scope', 'deptList', wc.HomeCtrl];

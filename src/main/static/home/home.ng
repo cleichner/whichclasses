@@ -1,0 +1,8 @@
+
+What are the best classes in the following departments:
+
+<ul>
+  <li ng-repeat="dept in deptList | orderBy: 'identifier'">
+    {{ dept.name }}
+  </li>
+</ul>
