@@ -43,8 +43,8 @@ public class DeptListPage extends CacheableLazyLoadedPage implements DeptList {
       String departmentId = HttpUtils.getFirstQueryParameter(departmentLink.attr("href"), "crssub");
       if (departmentId != null && departmentId.length() > 0) {
         String departmentName = departmentLink.text();
-        // TODO(gunsch): Reduce name in map to department code.
-        departmentPages.put(departmentName,
+        departmentId = normalizeDepartmentId(departmentId);
+        departmentPages.put(departmentId,
                 departmentPageFactory.create(departmentId, departmentName));
       }
     }
@@ -52,6 +52,15 @@ public class DeptListPage extends CacheableLazyLoadedPage implements DeptList {
     return model = new DeptListModel.Builder()
         .setChildren(departmentPages)
         .build();
+  }
+
+  /**
+   * Strips all spaces and underscores from department id. E.g. "A_ED" --> "AED".
+   * @param name
+   * @return
+   */
+  private String normalizeDepartmentId(String name) {
+    return name.replaceAll("[\\s_]", "");
   }
 
   @Override public Map<String, Department> getChildren() { return getModel().getChildren(); }

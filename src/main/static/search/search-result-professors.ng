@@ -1,0 +1,2 @@
+<!-- TODO: directive to format name -->
+<a href="/professors/{{ result.identifier }}">{{ result.name }}</a>

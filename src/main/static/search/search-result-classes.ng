@@ -1,0 +1,1 @@
+<a href="/classes/{{ result.identifier.department }}/{{ result.identifier.course_number }}">{{ result.title }}</a>

@@ -16,12 +16,16 @@
 
   <div ng-view></div>
 
-  <!-- TODO: use .min versions for prod -->
+  <!-- TODO: look into generating a minified bundle for prod and replacing inline. -->
+  <!-- TODO: look into HTTP/2 "server push" these -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular-route.js"></script>
-  <!-- TODO: look into HTTP/2 "server push" these -->
   <script src="/static/components/tce_data_service.js"></script>
   <script src="/static/home/home.js"></script>
+  <script src="/static/search/search_ctrl.js"></script>
   <script src="/static/app.js"></script>
+
+  <!-- TODO: look into sending an initial data load inline.
+       Should be easy-ish to leverage TceDataService for this. -->
 </body>
 </html>

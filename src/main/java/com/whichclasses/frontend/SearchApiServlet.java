@@ -12,16 +12,16 @@ import com.google.inject.Inject;
 import com.whichclasses.model.DataSource;
 
 /**
- * Returns the list of all departments as JSON.
+ * Handles ranking searches.
  */
 @SuppressWarnings("serial")
-public class DeptListApiServlet extends HttpServlet {
+public class SearchApiServlet extends HttpServlet {
+  private final DataSource mDataSource;
+  private final Gson mGson;
 
-  // This can be served as a constant value.
-  private final String deptListJson;
-
-  @Inject public DeptListApiServlet(DataSource dataSource, Gson gson) {
-    deptListJson = gson.toJson(dataSource.getDepartmentList().getChildren().values());
+  @Inject public SearchApiServlet(DataSource dataSource, Gson gson) {
+    this.mDataSource = dataSource;
+    this.mGson = gson;
   }
 
   @Override
@@ -29,6 +29,8 @@ public class DeptListApiServlet extends HttpServlet {
       throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_OK);
     response.setContentType("application/json");
-    response.getWriter().write(deptListJson);
+    // TODO: actually implement this
+    response.getWriter().write("{\"results\":[{\"identifier\":{\"department\":\"ECE\",\"course_number\":\"351A\"},\"title\":\"All The Circuits\"}]}");
   }
+
 }

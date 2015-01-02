@@ -9,8 +9,10 @@ public class AllServletsHandler extends ServletContextHandler {
 
   @Inject public AllServletsHandler(
       DeptListApiServlet deptListApiServlet,
+      SearchApiServlet searchApiServlet,
       WebServlet webServlet) {
     addServlet(new ServletHolder(deptListApiServlet), "/api/departments");
+    addServlet(new ServletHolder(searchApiServlet), "/api/search");
     addServlet(new ServletHolder(webServlet), "/*");
   }
 }

@@ -1,0 +1,12 @@
+The {{query.quality}} {{query.entityType}} in {{query.department}}:
+
+<ul>
+  <li ng-repeat="result in results">
+    <ng-include
+        ng-if="query.entityType=='classes'"
+        src="'/static/search/search-result-classes.ng'"></ng-include>
+    <ng-include
+        ng-if="query.entityType=='professors'"
+        src="'/static/search/search-result-professors.ng'"></ng-include>
+  </li>
+</ul>
