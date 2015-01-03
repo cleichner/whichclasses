@@ -5,6 +5,7 @@ import java.nio.file.FileSystems;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.whichclasses.ConfigManager;
 import com.whichclasses.model.DataSource;
 import com.whichclasses.scraper.cache.PageCache;
 import com.whichclasses.scraper.cache.PermanentHtmlDiskCache;
@@ -17,9 +18,7 @@ import com.whichclasses.scraper.page.DepartmentPage;
  */
 public class ScraperModule extends AbstractModule {
 
-  // TCE disk cache location.
-  // TODO(gunsch): allow specifying by system property
-  private static final String DISK_LOCATION = "/Users/gunsch/data/whichclasses";
+  private static final String DEFAULT_DISK_CACHE_LOCATION = "/tmp/whichclasses";
 
   @Override
   protected void configure() {
@@ -39,9 +38,10 @@ public class ScraperModule extends AbstractModule {
   }
 
   @Provides
-  PageCache providesDiskCache() {
-    return new PermanentHtmlDiskCache(
-        FileSystems.getDefault().getPath(DISK_LOCATION));
+  PageCache providesDiskCache(ConfigManager configManager) {
+    return new PermanentHtmlDiskCache(FileSystems.getDefault().getPath(
+        configManager.getConfigValue(
+            ConfigManager.DISK_CACHE_LOCATION, DEFAULT_DISK_CACHE_LOCATION )));
   }
 
 }

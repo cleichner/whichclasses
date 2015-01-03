@@ -5,3 +5,6 @@
 *.jar
 *.war
 *.ear
+
+# System properties file
+/src/main/resources/config.properties

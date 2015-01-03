@@ -26,6 +26,7 @@ import org.jsoup.select.Elements;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.whichclasses.ConfigManager;
 
 /**
  * Makes all Http requests to the TCE website, authenticating
@@ -33,18 +34,21 @@ import com.google.inject.Singleton;
 @Singleton
 public class AuthenticatedClient {
   private static final String WEBAUTH_LOGIN_URL = "https://webauth.arizona.edu/webauth/login";
-  private static final String WEBAUTH_USERNAME = System.getProperty("webauthUsername", "gunsch");
-  private static final String WEBAUTH_PASSWORD = System.getProperty("webauthPassword");
-
-  @Inject
-  public AuthenticatedClient() {}
 
   private final CookieStore cookieStore = new BasicCookieStore();
+  private final String mWebauthUsername;
+  private final String mWebauthPassword;
   private boolean isWebauthAuthenticated = false;
   private CloseableHttpClient client = HttpClients.custom()
       .setDefaultCookieStore(cookieStore)
       .setRedirectStrategy(new HttpUtilsSucksRedirectStrategy())
       .build();
+
+  @Inject
+  public AuthenticatedClient(ConfigManager configManager) {
+    mWebauthPassword = configManager.getConfigValue(ConfigManager.WEBAUTH_PASSWORD);
+    mWebauthUsername = configManager.getConfigValue(ConfigManager.WEBAUTH_USERNAME);
+  }
 
   /**
    * Loads a page with an HttpClient that has active Webauth cookies (or will login to
@@ -84,10 +88,6 @@ public class AuthenticatedClient {
   private void ensureWebauthAuthorization() throws Exception {
     if (isWebauthAuthenticated) return;
 
-    if (WEBAUTH_PASSWORD == null) {
-    	throw new IllegalArgumentException("Webauth password not provided.");
-    }
-
     // Simulate a long form!
     Document webauthLoginPage = getPage(client, WEBAUTH_LOGIN_URL);
     Element loginForm = webauthLoginPage.getElementById("fm1");
@@ -102,8 +102,8 @@ public class AuthenticatedClient {
     }
 
     // Fill in username/password
-    formPostData.add(new BasicNameValuePair("username", WEBAUTH_USERNAME));
-    formPostData.add(new BasicNameValuePair("password", WEBAUTH_PASSWORD));
+    formPostData.add(new BasicNameValuePair("username", mWebauthUsername));
+    formPostData.add(new BasicNameValuePair("password", mWebauthPassword));
 
     java.net.URI loginUri = new java.net.URI(WEBAUTH_LOGIN_URL).resolve(loginForm.attr("action"));
     HttpPost loginRequest = new HttpPost(loginUri);

@@ -15,6 +15,7 @@ public class WhichClasses {
     Injector injector = Guice.createInjector(
         new ScraperModule(),
         new WhichClassesFrontendModule());
+    ConfigManager configManager = injector.getInstance(ConfigManager.class);
 
     Logger.getGlobal().info("Begin scrape");
     injector.getInstance(Scraper.class).runScrape();
