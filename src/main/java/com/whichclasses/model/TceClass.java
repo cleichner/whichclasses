@@ -1,5 +1,7 @@
 package com.whichclasses.model;
 
-public interface TceClass {
+import com.whichclasses.statistics.Rateable;
+
+public interface TceClass extends Rateable {
   public TceClassModel getModel();
 }

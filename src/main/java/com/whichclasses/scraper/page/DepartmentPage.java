@@ -14,11 +14,12 @@ import com.whichclasses.model.Department;
 import com.whichclasses.scraper.http.HttpUtils;
 import com.whichclasses.scraper.page.CoursePage.CoursePageFactory;
 
-public class DepartmentPage extends CacheableLazyLoadedPage implements Department {
+public class DepartmentPage implements Department, Page {
   private static final String DEPARTMENT_PAGE_URL_BASE =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?"
       + "Report=DEPTCOURSE&crssub=%s";
   private final CoursePageFactory coursePageFactory;
+  private final Page page;
   private final String identifier;
   private final String name;
 
@@ -32,18 +33,17 @@ public class DepartmentPage extends CacheableLazyLoadedPage implements Departmen
   public DepartmentPage(
       CoursePageFactory coursePageFactory,
       @Assisted("DepartmentIdentifier") String identifier,
-      @Assisted("DepartmentName") String name) {
+      @Assisted("DepartmentName") String name,
+      Page page) {
     this.coursePageFactory = coursePageFactory;
     this.identifier = identifier;
     this.name = name;
+    this.page = page;
+    this.page.setHtmlUrl(String.format(DEPARTMENT_PAGE_URL_BASE, identifier));
   }
 
   @Override public String getShortName() { return identifier; }
   @Override public String getFullName() { return name; }
-  
-  @Override String getHtmlUrl() {
-    return String.format(DEPARTMENT_PAGE_URL_BASE, identifier);
-  }
 
   /**
    * @return map of course titles (e.g. "ACCT 200A") to CoursePage instances
@@ -70,5 +70,20 @@ public class DepartmentPage extends CacheableLazyLoadedPage implements Departmen
         .append("] - ")
         .append(name)
         .toString();
+  }
+  
+  @Override
+  public String getHtmlUrl() {
+    return page.getHtmlUrl();
+  }
+
+  @Override
+  public void setHtmlUrl(String htmlUrl) {
+    page.setHtmlUrl(htmlUrl);
+  }
+
+  @Override
+  public Document getDocument() {
+    return page.getDocument();
   }
 }
