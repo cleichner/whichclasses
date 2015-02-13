@@ -14,21 +14,20 @@ import com.whichclasses.scraper.http.HttpUtils;
 import com.whichclasses.scraper.model.DeptListModel;
 import com.whichclasses.scraper.page.DepartmentPage.DepartmentPageFactory;
 
-public class DeptListPage extends CacheableLazyLoadedPage implements DeptList {
+public class DeptListPage implements DeptList, Page {
 
   private static final String DEPARTMENT_LIST_URL =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/DeptList.aspx";
   private final DepartmentPageFactory departmentPageFactory;
+  private Page page;
   private DeptListModel model;
 
   @Inject
-  DeptListPage(DepartmentPageFactory departmentPageFactory) {
+  DeptListPage(DepartmentPageFactory departmentPageFactory,
+      Page page) {
     this.departmentPageFactory = departmentPageFactory;
-  }
-
-  @Override
-  String getHtmlUrl() {
-    return DEPARTMENT_LIST_URL;
+    this.page = page;
+    this.page.setHtmlUrl(DEPARTMENT_LIST_URL);
   }
 
   private DeptListModel getModel() {
@@ -60,8 +59,24 @@ public class DeptListPage extends CacheableLazyLoadedPage implements DeptList {
    * @return
    */
   private String normalizeDepartmentId(String name) {
-    return name.replaceAll("[\\s_]", "");
+    return name.replaceAll("[\\s]", "");
+    //return name.replaceAll("[\\s_]", "");
   }
 
   @Override public Map<String, Department> getChildren() { return getModel().getChildren(); }
+  
+  @Override
+  public String getHtmlUrl() {
+    return page.getHtmlUrl();
+  }
+
+  @Override
+  public void setHtmlUrl(String htmlUrl) {
+    page.setHtmlUrl(htmlUrl);
+  }
+
+  @Override
+  public Document getDocument() {
+    return page.getDocument();
+  }
 }

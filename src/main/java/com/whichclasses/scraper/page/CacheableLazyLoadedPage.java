@@ -16,18 +16,31 @@ import com.whichclasses.scraper.http.AuthenticatedClient;
  * These are combined into a single class to maximize shared code. Multiple inheritance
  * in another language might be considered appropriate here otherwise.
  */
-public abstract class CacheableLazyLoadedPage {
+public class CacheableLazyLoadedPage implements Page {
 
-  // Being lazy by injecting these here. Oh well.
-  @Inject private AuthenticatedClient httpClient;
-  @Inject private PageCache pageHtmlCache;
+  // Field injection is the work of the devil.
+  private AuthenticatedClient httpClient;
+  private PageCache pageHtmlCache;
+  private String htmlUrl;
+  
+  @Inject
+  public CacheableLazyLoadedPage(AuthenticatedClient httpClient, PageCache pageHtmlCache) {
+    this.httpClient = httpClient;
+    this.pageHtmlCache = pageHtmlCache;
+  }
 
   /**
    * @return the fully-qualified URL required to load the given page.
    */
-  abstract String getHtmlUrl();
+  public String getHtmlUrl() {
+    return this.htmlUrl;
+  }
+  
+  public void setHtmlUrl(String htmlUrl) {
+    this.htmlUrl = htmlUrl;
+  }
 
-  Document getDocument() {
+  public Document getDocument() {
     String htmlUrl = getHtmlUrl();
     Document documentFromCache = pageHtmlCache.get(htmlUrl);
     if (documentFromCache != null) {

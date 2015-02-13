@@ -9,5 +9,4 @@ public interface DataSource {
    * @return All TCE departments.
    */
   public DeptList getDepartmentList();
-
 }

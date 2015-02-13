@@ -9,9 +9,13 @@ import com.whichclasses.ConfigManager;
 import com.whichclasses.model.DataSource;
 import com.whichclasses.scraper.cache.PageCache;
 import com.whichclasses.scraper.cache.PermanentHtmlDiskCache;
+import com.whichclasses.scraper.page.CacheableLazyLoadedPage;
+import com.whichclasses.scraper.page.Page;
 import com.whichclasses.scraper.page.TceClassPage;
 import com.whichclasses.scraper.page.CoursePage;
 import com.whichclasses.scraper.page.DepartmentPage;
+import com.whichclasses.statistics.ConcreteAggregator;
+import com.whichclasses.statistics.DataAggregator;
 
 /**
  * Guice module for "production mode".
@@ -34,7 +38,9 @@ public class ScraperModule extends AbstractModule {
 
     // When using Scraper, it acts as a generic DataSource for TCE data.
     // This may need to be separated into its own optional module if there's ever a conflict.
+    bind(Page.class).to(CacheableLazyLoadedPage.class);
     bind(DataSource.class).to(Scraper.class);
+    bind(DataAggregator.class).to(ConcreteAggregator.class);
   }
 
   @Provides

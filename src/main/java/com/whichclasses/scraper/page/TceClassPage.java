@@ -1,20 +1,26 @@
 package com.whichclasses.scraper.page;
 
+import java.text.ParseException;
+
+import org.jsoup.nodes.Document;
+
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.model.TceClass;
 import com.whichclasses.model.TceClassModel;
+import com.whichclasses.model.proto.TceRating.Question;
 
 /**
  * Represents the TCE page dealing with a single instance of a course (e.g.
  * CSC 335 taught in Spring 2012 by Mercer).
  */
-public class TceClassPage extends CacheableLazyLoadedPage implements TceClass {
+public class TceClassPage implements TceClass, Page {
 
   private static final String CLASS_PAGE_URL_BASE =
       "https://tce.oirps.arizona.edu/TCE_Student_Reports_CSS/GenerateReport.aspx?Report=ASUARep&"
       + "crsid=%s&trmcod=%s";
 
+  private Page page;
   private final String crsId;
   private final int trmCod;
 
@@ -29,13 +35,12 @@ public class TceClassPage extends CacheableLazyLoadedPage implements TceClass {
   @Inject
   public TceClassPage(
       @Assisted("ClassId") String crsId,
-      @Assisted("Semester") int trmCod) {
+      @Assisted("Semester") int trmCod,
+      Page page) {
     this.crsId = crsId;
     this.trmCod = trmCod;
-  }
-
-  @Override String getHtmlUrl() {
-    return String.format(CLASS_PAGE_URL_BASE, crsId, trmCod);
+    this.page = page;
+    this.page.setHtmlUrl(String.format(CLASS_PAGE_URL_BASE, crsId, trmCod));
   }
 
   @Override public String toString() {
@@ -49,6 +54,41 @@ public class TceClassPage extends CacheableLazyLoadedPage implements TceClass {
 
   private void buildModelIfNecessary() {
     if (model != null) return;
-    model = new TceClassModel(TceClassPageParser.parseTceClassPage(getDocument()));
+    try {
+      model = new TceClassModel(TceClassPageParser.parseTceClassPage(getDocument()));
+    } catch (ParseException e) {
+      // TODO Handle this
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public int getRatingCount(Question question) {
+    return getModel().getRatingCount(question);
+  }
+
+  @Override
+  public double getAverageScore(Question question) {
+    return getModel().getAverageScore(question);
+  }
+
+  @Override
+  public double getWilsonScore(Question question) {
+    return getModel().getWilsonScore(question);
+  }
+  
+  @Override
+  public String getHtmlUrl() {
+    return page.getHtmlUrl();
+  }
+
+  @Override
+  public void setHtmlUrl(String htmlUrl) {
+    page.setHtmlUrl(htmlUrl);
+  }
+
+  @Override
+  public Document getDocument() {
+    return page.getDocument();
   }
 }

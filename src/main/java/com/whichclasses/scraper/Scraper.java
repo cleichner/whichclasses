@@ -22,7 +22,7 @@ public class Scraper implements DataSource {
   public void runScrape() {
     // For now: scrape one thing and build models for each.
     Map<String, Department> depts = mDeptList.getChildren();
-    Department firstDepartment = depts.get("ACCT");
+    Department firstDepartment = depts.get("C_SC");
     System.out.println("Got department " + firstDepartment);
     Map<String, Course> courses = firstDepartment.getChildren();
 
@@ -30,8 +30,8 @@ public class Scraper implements DataSource {
       System.out.println("Got course " + oneCourse);
       Map<String, TceClass> classes = oneCourse.getChildren();
       for (TceClass oneClass : classes.values()) {
-//        System.out.println("Got class " + oneClass);
-//        System.out.println("Class: " + oneClass.getModel().toString());
+        System.out.println("Got class " + oneClass);
+        //System.out.println("Class: " + oneClass.getModel().toString());
       }
     }
 
@@ -41,4 +41,5 @@ public class Scraper implements DataSource {
   public DeptList getDepartmentList() {
     return mDeptList;
   }
+  
 }
