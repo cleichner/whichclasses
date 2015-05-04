@@ -7,6 +7,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/app.css">
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
 <body>
   <ul class="menu">
