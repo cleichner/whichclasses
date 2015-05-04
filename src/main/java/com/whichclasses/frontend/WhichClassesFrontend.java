@@ -2,6 +2,7 @@ package com.whichclasses.frontend;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -14,6 +15,8 @@ import com.google.inject.Inject;
 
 public class WhichClassesFrontend implements Frontend {
 
+  private static final int SERVER_PORT = 8008;
+
   private final AllServletsHandler mServletHandler;
 
   @Inject public WhichClassesFrontend(AllServletsHandler servletHandler) {
@@ -21,7 +24,8 @@ public class WhichClassesFrontend implements Frontend {
   }
 
   @Override public void startServing() throws Exception {
-    Server server = new Server(8080);
+    Server server = new Server(SERVER_PORT);
+    Logger.getGlobal().info("Starting local server on port " + SERVER_PORT);
 
     List<Handler> orderedHandlers = new ArrayList<>();
 

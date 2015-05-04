@@ -1,5 +1,6 @@
 package com.whichclasses.scraper;
 
+import java.util.logging.Logger;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -23,11 +24,11 @@ public class Scraper implements DataSource {
     // For now: scrape one thing and build models for each.
     Map<String, Department> depts = mDeptList.getChildren();
     Department firstDepartment = depts.get("ACCT");
-    System.out.println("Got department " + firstDepartment);
+    Logger.getGlobal().info("Got department " + firstDepartment);
     Map<String, Course> courses = firstDepartment.getChildren();
 
     for (Course oneCourse : courses.values()) {
-      System.out.println("Got course " + oneCourse);
+      Logger.getGlobal().info("Got course " + oneCourse);
       Map<String, TceClass> classes = oneCourse.getChildren();
       for (TceClass oneClass : classes.values()) {
 //        System.out.println("Got class " + oneClass);
