@@ -1,29 +1,32 @@
-Notes:
-* Need to settle on how to do indexing/searching soon.
-** Primary source of truth is HTML files on disk. Parsed format should be
-   regenerated on the fly at server start time.
-** Ideally don't want to reimplement indexing/searching.
-** Data is highly relational. Relational DB might be best.
+Disclaimer: this list of notes/TODOs belongs in an issue tracker if
+there are ever >2 people working on this project.
 
+[Critical features]
+[1] Parse questions to enums.
+[2] Aggregated search API/page. (depends: [1])
+[3] Teacher model
+[4] Create minified bundle of JS resources with un-minified (or source-mapped) debug versions
+[6] APIs for single course/class/teacher
+[7] UIs for single course/class/teacher [7]
+[8] Logging/Tracing wrapper(s) for requests. Make sure they don't block actual responses.
+
+[Possible performance improvements] (don't build any before [8])
+* Relational-DB solution for searching
+* Add a PushStrategy to Jetty for HTTP/2 push (depends: [4])
+
+
+[Open bugs]
+* Questions not parsed to enums
+* Term strings not parsed to term codes (less important for now)
+* Invalid pages (not logged in, load failures, etc.) shouldn't be saved/cached.
+
+
+[Other notes]
 * Need to parse TceClass page contents into meaningful data, including:
 ** Normalization of different questions
 ** Normalization of different answer ranges, thanks to 2011-12
 
-* Start bringing up a simple frontend. Thoughts:
-** Try out Angular. Figure out what freemarker looks like for that.
-** Bootstrap / etc.
-** Add a PushStrategy to Jetty once we have a handle on needed resources
-
-* Put together more request servlets:
-** All of the courses in a department (with sorting qualifiers?)
-** Details for a single course / class
-** [Low-priority] add a LoggingHandlerWrapper for logging/tracing of requests. Make sure it
-   does not block actual responses.
-
-* TceClassModel:
-* Add some simple calculation helpers for getting confidence interval and score
-
-Bugs to resolve:
-* Questions not parsed to enums
-* Term strings not parsed to term codes (less important for now)
-* Invalid pages (not logged in, load failures, etc.) shouldn't be saved/cached.
+* May need to pull in a solution for indexing/searching.
+** Primary source of truth is HTML files on disk. Parsed format should be
+   regenerated on the fly at server start time.
+** Data is highly relational. Relational DB might be best.
