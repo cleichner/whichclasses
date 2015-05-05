@@ -1,5 +1,7 @@
 package com.whichclasses.scraper.page;
 
+import java.text.ParseException;
+
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.whichclasses.model.TceClass;
@@ -49,6 +51,11 @@ public class TceClassPage extends CacheableLazyLoadedPage implements TceClass {
 
   private void buildModelIfNecessary() {
     if (model != null) return;
-    model = new TceClassModel(TceClassPageParser.parseTceClassPage(getDocument()));
+    try {
+      model = new TceClassModel(TceClassPageParser.parseTceClassPage(getDocument()));
+    } catch (ParseException e) {
+      // TODO: Handle this.
+      e.printStackTrace();
+    }
   }
 }

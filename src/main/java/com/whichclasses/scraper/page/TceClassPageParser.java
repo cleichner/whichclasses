@@ -1,5 +1,6 @@
 package com.whichclasses.scraper.page;
 
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -26,7 +27,7 @@ public final class TceClassPageParser {
     public ParserException(String message, Throwable e) { super(message, e); }
   }
   
-  public static TceClassProto parseTceClassPage(Document page) {
+  public static TceClassProto parseTceClassPage(Document page) throws ParseException {
     return new TceClassPageParser(page).buildModel();
   }
 
@@ -63,7 +64,7 @@ public final class TceClassPageParser {
     STATE_READING_RESULTS,
   }
   
-  private TceClassProto buildModel() {
+  private TceClassProto buildModel() throws ParseException {
     // The entire course row is a jumble.
     String courseRowText = getElementTagNameContainingText(metadataTable, "tr", "Course:").text();
     Matcher courseRowMatcher = COURSE_ROW_PATTERN.matcher(courseRowText);
@@ -132,11 +133,10 @@ public final class TceClassPageParser {
           }
 
           String questionText = questionRow.text();
+          
+          Question question =  parseQuestion(questionText);
           builder = TceRating.newBuilder()
-              // TODO: which question is this? Different wordings map to
-              // the same concept here. Translate from questionText, throw
-              // if unrecognized.
-              .setQuestion(Question.OVERALL_COURSE_RATING);
+              .setQuestion(question);
           state = QuestionParsingState.STATE_READING_RESULTS;
           valueIndex = 0;
 
@@ -161,6 +161,41 @@ public final class TceClassPageParser {
         .setTitle(courseTitle)
         .addAllRating(questionResults)
         .build();
+  }
+
+  private Question parseQuestion(String questionText) throws ParseException {
+    switch(questionText) {
+      case "What is your overall rating of the instructor(s) teaching effectiveness in the online environment?":
+      case "What is your overall rating of this instructor's teaching effectiveness?":
+        return Question.OVERALL_INSTRUCTOR_RATING;
+      case "What is your rating of this instructor compared with other instructors you have had?":
+        return Question.COMPARATIVE_INSTRUCTOR_RATING;
+      case "What is your overall rating of this course":
+      case "What is your overall rating of this course?":
+        return Question.OVERALL_COURSE_RATING;
+      case "How much do you feel you have learned in this course?":
+        return Question.COURSE_LEARNING;
+      case "The difficulty level of the course is":
+      case "How difficult was this course for you?":
+      case "The difficulty level of the course is.":
+        return Question.COURSE_DIFFICULTY;
+      case "Rate the usefulness of the outside assignments (homework, papers, reports, and special projects, etc.) in helping you learn.":
+      case "Rate the overall usefulness of outside (not in class) assignments (homework, papers, reports, special projects, online work, etc.) in helping you achieve important course goals and objectives":
+        return Question.EXTERNAL_WORK_RATING;
+      case "Rate the overall usefulness of in-class meeting time activities (e.g. lectures, discussions, teamwork, labs, etc.) in helping you achieve important course goals and objectives":
+        return Question.INTERNAL_WORK_RATING;
+      case "The materials used in this course (text, readings, websites, etc.) are.":
+      case "Rate the overall usefulness of assigned texts and readings (print or online) in helping you achieve important course goals and objectives":
+        return Question.COURSE_MATERIALS_RATING;
+      case "I was treated with respect in this class.":
+        return Question.INSTRUCTOR_RESPECT;
+      case "Outside of class time, about how many hours per week have you spent on class-related work (reading, reviewing notes, writing papers, team meetings, etc.)?":
+      case "On average, how many hours per week do you spend on this class, including attending class, doing readings, reviewing notes, and any other course-related work?":
+        return Question.TIME_SPENT_EXTERNALLY;
+      case "Of the total hours you spent on this class, how many were valuable in advancing your education?.":
+        return Question.TIME_VALUE_RATING;
+    }
+    throw new ParseException("Could not parse question: \"" + questionText + "\"", 0);
   }
 
   /**
